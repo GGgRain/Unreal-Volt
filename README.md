@@ -1,10 +1,10 @@
-#Volt - An Animation Library For Unreal Engine's Slate Architecture
+# Volt - An Animation Library For Unreal Engine's Slate Architecture
 
 ## Overview 
 
 **Volt** is a flexible library for the animation of the unreal engine slate architecture.
 The main goal of Volt is to provide an appealing visual appearance on the parts of the engine where the slate architecture is forced to be used instead of UMG architecture by animating the slate elements.
-This project is a part of the bigger project (SimpleDialogueSystem2 (Joint)) and fully designed and written by DevGrain.
+This project is a part of the bigger project (SimpleDialogueSystem2 (Joint)) and is fully designed and written by DevGrain.
 
 ## Features 
 - **Slate Integration**: Seamlessly integrates with Slate UI framework in Unreal Engine 5. 
