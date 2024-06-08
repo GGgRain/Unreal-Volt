@@ -1,21 +1,11 @@
-# Volt - An Animation Library For Unreal Engine's Slate Architecture
+# Volt - The Animation Library for Unreal Slate Architecture
 
-**Volt** is a flexible library for the animation of the unreal engine slate architecture.
-The main goal of Volt is to provide an appealing visual appearance on the parts of the engine where the slate architecture is forced to be used instead of UMG architecture by animating the slate elements.
-This project is a part of the bigger project (SimpleDialogueSystem2 (Joint)) and is fully designed and written by DevGrain.
+Volt is a simple, modular library powered by various UObject-based modules that can manipulate slate properties as you want in both runtime and editor. 
 
-## Features 
-- **Slate Integration**: Seamlessly integrates with Slate UI framework in Unreal Engine 5. 
-- **Custom Animations**: Offers a variety of pre-built animations tailored for UI elements.
-- **Easy to Use**: Simple API for incorporating animations into UI widgets. 
-- **Highly Customizable**: Provides parameters for adjusting animation properties such as duration, easing, and delay. 
-- **Performance Optimized**: Optimized for performance to ensure smooth animations even in demanding scenes.
-- **Fully Modulized**: VoltCore, Volt, VoltEditor
+This library is part of Joint Project, a powerful full-modular conversation scripting framework, especially Volt took place in the editor module to animate the slates on the editor without limitation on the production and performances. 
 
-## Contributing
+This project is open source and will be uploaded to GitHub very soon, allowing you to fork or pull something together. GitHub will get the updates more frequently, so make sure to visit there if you want to get up-to-date with your files. Or, you can visit our discord to get any news for the new updates.
 
-Contributions are welcome! If you have any improvements or new features to add, feel free to submit a pull request. The original developer (DevGrain) is also still continuously working on the project and more and more features and modules will be updated.
+The distribution of the project intends to make you able to use it on your editor for the visual part. Let's make Unreal's editor beautiful! 
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+We are still making a description for the plugin. Please keep in touch. If you have any questions related to this, please visit our discord. (https://discord.gg/DzNFax2aBS)

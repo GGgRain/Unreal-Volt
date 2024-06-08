@@ -1,0 +1,42 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Volt",
+	"Description": "A modular animation library for Unreal's slate architecture. Work in both editor and runtime.",
+	"Category": "Slate",
+	"CreatedBy": "DevGrain",
+	"CreatedByURL": "",
+	"DocsURL": "https://gggrain.github.io/docs/guide_docs/intro",
+	"MarketplaceURL": "",
+	"SupportURL": "https://discord.gg/DzNFax2aBS",
+	"EngineVersion": "5.4.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "VoltCore",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "Volt",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "VoltEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		}
+	]
+}
