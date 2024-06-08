@@ -14,7 +14,9 @@ We assume that you are going to use Volt on your plugin.
 1. Download and unzip the plugin.
 2. Copy-paste the contents in the Source folder to your plugin.
 3. Go to your plugin's .uplugin file and add the modules there. (Volt, VoltCore, VoltEditor). Please check out the Volt.uplugin to see the module type and loading phase.
+4. And **MOST IMPORTANTLY**, **rename all the classes and module names to something unique, to prevent compatibility issues with other programs that use Volt too. Unfortunately, Epic Games forbid us to make the plugin dependent on the plugin on the marketplace so we can not share libraries between multiple projects unless it becomes a part of the engine itself.**
 
+(Please let us know if you have any clever ideas to make it work on multiple plugins.)
 ## Modules
 
 * Volt - The module that contains some basic ready-to-use animations and modules for the plugin.
@@ -23,11 +25,11 @@ We assume that you are going to use Volt on your plugin.
 
 ## How to use?
 
-Please check out the header files of the classes. We provided clear instructions for each functions and properties.
+Please check out the header files of the classes. We provided clear instructions for each function and properties.
 
 ### Playing animations
 
-First, you have to implement a ```UVoltAnimationManager``` that will handle all the calculation for the animation tracks for your slates.
+First, you have to implement a ```UVoltAnimationManager``` that will handle all the calculations for the animation tracks for your slates.
 
 ```
 if (AnimationManager == nullptr)
@@ -39,7 +41,7 @@ if (AnimationManager == nullptr)
 }
 ```
 
-Then you can play animations on the slates. Volt Animation Manager will automatically find or add an wrapper object for provided slate that handles the animation data.
+Then you can play animations on the slates. Volt Animation Manager will automatically find or add a wrapper object for the provided slate that handles the animation data.
 
 ```
 VOLT_STOP_ALL_ANIM(AnimationManager, NodeBody);
