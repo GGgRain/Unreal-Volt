@@ -1,5 +1,5 @@
 ![Volt-Logo](Resources/Icon128.png)
-# Volt
+# Volt - The Slate Architecture Animation Library for Unreal Engine
 Volt is a simple, modular animation Library for Unreal Slate Architecture powered by various UObject-based modules that can manipulate slate properties as you want in both runtime and editor. 
 
 This library is part of [Joint](https://www.unrealengine.com/marketplace/ko/product/ec432b9261c94b70a4068507d42a4f5a) Project, a powerful full-modular conversation scripting framework, especially Volt took place in the editor module to animate the slates on the editor without limitation on the production and performances. 
