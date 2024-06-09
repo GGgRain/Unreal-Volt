@@ -29,14 +29,6 @@
 			"PlatformAllowList": [
 				"Win64"
 			]
-		},
-		{
-			"Name": "VoltEditor",
-			"Type": "Editor",
-			"LoadingPhase": "Default",
-			"PlatformAllowList": [
-				"Win64"
-			]
 		}
 	]
 }
