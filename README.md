@@ -27,7 +27,6 @@ We assume that you are going to use Volt on your plugin.
 
 * Volt - The module that contains some basic ready-to-use animations and modules for the plugin.
 * VoltCore - The module that contains the fundamental classes for the framework.
-* VoltEditor - The module that contains test and debugging purpose slates. (not so much to see yet!)
 
 ## How to use?
 
