@@ -14,6 +14,7 @@ The project's distribution intends to enable you to use it on your editor for th
 ![2024-06-0908-47-32-ezgif com-video-to-gif-converter (1)](https://github.com/GGgRain/Volt/assets/69423737/d4085598-72a5-4771-8867-13df482f1994)
 ![2024-06-0908-47-32-ezgif com-video-to-gif-converter (2)](https://github.com/GGgRain/Volt/assets/69423737/7164ebe3-4d6b-4ad1-8f60-f520de2a2f0f)
 
+Click this image to watch Volt's showcase video.
 [![Showcase](https://img.youtube.com/vi/ujdCIfK_cho/0.jpg)](https://www.youtube.com/watch?v=ujdCIfK_cho)
 
 ## Installation
