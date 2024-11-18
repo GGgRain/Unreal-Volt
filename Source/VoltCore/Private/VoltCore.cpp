@@ -17,5 +17,5 @@ void FVoltCoreModule::ShutdownModule()
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FVoltCoreModule, voltCore)
+IMPLEMENT_MODULE(FVoltCoreModule, VoltCore)
 
