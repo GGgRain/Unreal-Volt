@@ -315,10 +315,12 @@ You have to make a variable and variable actions and bind them on the ```UVoltSe
 
 UVoltSettings.cpp
 ```
-UVoltSettings::UVoltSettings()
+void UVoltSettings::ResetVariableActionsForVariable(const bool bSaveConfig)
 {
-	
+
 #if WITH_EDITOR
+
+	VariableActionsForVariable.Empty();
 	
 	MACRO_REGISTER_VARIABLE_ACTION(UVoltVar_Opacity::StaticClass(),UVoltVarAction_Opacity::StaticClass())
 	MACRO_REGISTER_VARIABLE_ACTION(UVoltVar_WidgetTransform::StaticClass(),UVoltVarAction_WidgetTransform::StaticClass())
@@ -327,12 +329,13 @@ UVoltSettings::UVoltSettings()
 	MACRO_REGISTER_VARIABLE_ACTION(UVoltVar_BackgroundColor::StaticClass(),UVoltVarAction_BackgroundColor::StaticClass())
 	MACRO_REGISTER_VARIABLE_ACTION(UVoltVar_ChildSlotPadding::StaticClass(),UVoltVarAction_ChildSlotPadding::StaticClass())
 	MACRO_REGISTER_VARIABLE_ACTION(UVoltVar_ParentSlotPadding::StaticClass(),UVoltVarAction_ParentSlotPadding::StaticClass())
+	
+	if(bSaveConfig) SaveConfig(CPF_Config, *GetDefaultConfigFilename());
 
-	SaveConfig(CPF_Config, *GetDefaultConfigFilename());
+	MarkAsInitialized();
 	
 #endif
 	
-
 }
 ```
 
