@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "VoltDecl.h"
 #include "VoltModuleItem.h"
 
 #include "UObject/NoExportTypes.h"
@@ -13,6 +14,14 @@ class VOLT_API UVolt_ASM_SetWidgetTransformPivot : public UVoltModuleItem
 {
 	
 	GENERATED_BODY()
+
+	VOLT_MODULE_BEGIN_ARGS(UVolt_ASM_SetWidgetTransformPivot) {}
+	VOLT_MODULE_ARGUMENT( FVector2D, TargetWidgetTransformPivot )
+	VOLT_MODULE_END_ARGS()
+
+public:
+
+	void Construct(const FArguments& InArgs);
 
 public:
 

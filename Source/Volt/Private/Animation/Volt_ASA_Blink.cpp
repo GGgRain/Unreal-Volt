@@ -11,10 +11,10 @@ UVolt_ASA_Blink::UVolt_ASA_Blink(const FObjectInitializer& ObjectInitializer) : 
 	Modules.Add(SequenceModule);
 	
 	UVolt_ASM_InterpRenderOpacity* ColorInModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpRenderOpacity>(this,"ColorInterpIn");
-	ColorInModule->InterpSpeed = 7;
+	ColorInModule->RateBasedInterpSpeed = 7;
 
 	UVolt_ASM_InterpRenderOpacity* ColorOutModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpRenderOpacity>(this,"ColorInterpOut");
-	ColorOutModule->InterpSpeed = 7;
+	ColorOutModule->RateBasedInterpSpeed = 7;
 
 	SequenceModule->Modules.Add(ColorInModule);
 	SequenceModule->Modules.Add(ColorOutModule);

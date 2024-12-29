@@ -19,32 +19,17 @@ struct FVoltAnimationTrack
 public:
 	virtual ~FVoltAnimationTrack() = default;
 
-	FVoltAnimationTrack(FGuid SpecificGuid) : Guid(SpecificGuid)
-	{
-	}
-
-	FVoltAnimationTrack(): Guid(!Guid.IsValid() ? FGuid::NewGuid() : Guid)
-	{
-	}
-
-	FVoltAnimationTrack(
-		TScriptInterface<IVoltInterface> InSlateInterface,
-		const TSoftObjectPtr<UVoltAnimation>& InAnimation
-	) :
-		TargetSlateInterface(InSlateInterface),
-		TargetAnimation(InAnimation),
-		Guid(!Guid.IsValid() ? FGuid::NewGuid() : Guid)
-	{
-	}
+	FVoltAnimationTrack(const FGuid SpecificGuid) : Guid(SpecificGuid) {}
+	
+	FVoltAnimationTrack(): Guid(FGuid::NewGuid()) {}
+	
+	FVoltAnimationTrack(TScriptInterface<IVoltInterface> InSlateInterface, const TSoftObjectPtr<UVoltAnimation>& InAnimation) : TargetSlateInterface(InSlateInterface),TargetAnimation(InAnimation),Guid(FGuid::NewGuid()) {}
 
 	//Copy-paste its Guid since both must direct the same track.
-	FVoltAnimationTrack(const FVoltAnimationTrack& From) : TargetSlateInterface(From.TargetSlateInterface),
-	                                                       TargetAnimation(From.TargetAnimation),
-	                                                       Guid(From.GetGUID())
-	{
-	}
+	FVoltAnimationTrack(const FVoltAnimationTrack& From) : TargetSlateInterface(From.TargetSlateInterface), TargetAnimation(From.TargetAnimation), Guid(From.GetGUID()) {}
 
 public:
+	
 	UPROPERTY(BlueprintReadWrite, Category="Animation Track")
 	TScriptInterface<IVoltInterface> TargetSlateInterface;
 
@@ -52,17 +37,25 @@ public:
 	TSoftObjectPtr<UVoltAnimation> TargetAnimation;
 
 public:
-	virtual FGuid GetGUID() const;
 
-public:
-	/** Guid for the track. If this Guid is same with the other track than both will be recognized as the same tracks. **/
+	/**
+	 * Guid for the track. If this Guid is same with the other track than both will be recognized as the same tracks.
+	 */
 	UPROPERTY()
 	FGuid Guid = FGuid();
 
 public:
+
+	virtual FGuid GetGUID() const;
+
+public:
+	
 	bool IsNullTrack() const;
 
+public:
+
 	VOLTCORE_API static const FVoltAnimationTrack NullTrack;
+	
 };
 
 inline FGuid FVoltAnimationTrack::GetGUID() const

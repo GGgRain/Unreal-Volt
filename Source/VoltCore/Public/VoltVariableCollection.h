@@ -31,14 +31,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Animated Slate Variable")
 	UVoltVariableBase* FindVariable(TSubclassOf<UVoltVariableBase> Type);
 
-
 public:
 
 	UFUNCTION(BlueprintCallable, Category="Animated Slate Variable")
 	const TArray<UVoltVariableBase*>& GetVariables();
+
+
+private:
+
+	UVoltVariableBase* EnqueueVariableOnQueue(UVoltVariableBase* Variable);
+
+	void ProcessQueue();
+
+	friend UVoltAnimationManager;
+
+private:
+
+	UPROPERTY(Transient)
+	TArray<UVoltVariableBase*> QueuedVariables;
 	
 private:
 
-	UPROPERTY()
+	UPROPERTY(Transient)
 	TArray<UVoltVariableBase*> Variables;
 };

@@ -4,6 +4,7 @@
 
 #include "VoltAnimation.h"
 #include "VoltAnimationManager.h"
+#include "VoltDecl.h"
 
 
 void SVoltAnimatedBorder::Construct(const SVoltAnimatedBorder::FArguments& InArgs, SBorder::FArguments BorderArgs)
@@ -28,7 +29,7 @@ void SVoltAnimatedBorder::CreateAnimationManagerIfNeeded()
 {
 	if(ParentAnimationManager != nullptr) return;
 
-	VOLT_IMPLEMENT_MANAGER(&InternalAnimationManager);
+	VOLT_IMPLEMENT_MANAGER(&InternalAnimationManager, this->AsShared());
 }
 
 void SVoltAnimatedBorder::OnMouseEnter(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
@@ -41,7 +42,7 @@ void SVoltAnimatedBorder::OnMouseEnter(const FGeometry& MyGeometry, const FPoint
 
 	MouseEnterAnimTrack = VOLT_PLAY_ANIM(
 		GetAnimationManager(),
-		VOLT_FIND_OR_ASSIGN_SLATE(GetAnimationManager(), this->AsShared()),
+		VOLT_FIND_OR_ASSIGN_INTERFACE_FOR(this->AsShared()),
 		VOLT_GET_ANIMATION(OnMouseEnterAnimationClass,GetAnimationManager()));
 }
 
@@ -61,7 +62,7 @@ void SVoltAnimatedBorder::OnMouseLeave(const FPointerEvent& MouseEvent)
 	
 	MouseLeaveAnimTrack = VOLT_PLAY_ANIM(
 		GetAnimationManager(),
-		VOLT_FIND_OR_ASSIGN_SLATE(GetAnimationManager(), this->AsShared()),
+		VOLT_FIND_OR_ASSIGN_INTERFACE_FOR(this->AsShared()),
 		VOLT_GET_ANIMATION(OnMouseLeaveAnimationClass,GetAnimationManager()));
 }
 

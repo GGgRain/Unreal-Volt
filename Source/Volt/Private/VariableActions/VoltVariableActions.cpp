@@ -70,6 +70,7 @@ bool UVoltVarAction_ColorAndOpacity::CheckSupportWidget(TWeakPtr<SWidget> Slate)
 		const FName SlateType = Slate.Pin()->GetType();
 		if (SlateType == "SImage") return true;
 		if (SlateType == "SBorder") return true;
+		if (SlateType == "STextBlock") return true;
 
 	}
 
@@ -85,7 +86,7 @@ void UVoltVarAction_ColorAndOpacity::ApplyVariable(UVoltVariableBase* Variable, 
 	UVoltVar_ColorAndOpacity* CastedVar = Cast<UVoltVar_ColorAndOpacity>(Variable);
 
 	if (!CastedVar) return;
-
+	
 	if (SlateToApply.Pin()->GetType() == "SImage")
 	{
 		const TSharedPtr<SImage> CastedWidget = StaticCastSharedPtr<SImage>(SlateToApply.Pin());
@@ -103,6 +104,15 @@ void UVoltVarAction_ColorAndOpacity::ApplyVariable(UVoltVariableBase* Variable, 
 
 		return;
 	}
+
+	if (SlateToApply.Pin()->GetType() == "STextBlock")
+	{
+		const TSharedPtr<STextBlock> CastedWidget = StaticCastSharedPtr<STextBlock>(SlateToApply.Pin());
+
+		CastedWidget->SetColorAndOpacity(CastedVar->Value);
+
+		return;
+	}
 }
 
 bool UVoltVarAction_BackgroundColor::CheckSupportWidget(TWeakPtr<SWidget> Slate)
@@ -111,6 +121,7 @@ bool UVoltVarAction_BackgroundColor::CheckSupportWidget(TWeakPtr<SWidget> Slate)
 	{
 		const FName SlateType = Slate.Pin()->GetType();
 		if (SlateType == "SBorder") return true;
+		if (SlateType == "SButton") return true;
 	}
 
 	return false;
@@ -125,7 +136,7 @@ void UVoltVarAction_BackgroundColor::ApplyVariable(UVoltVariableBase* Variable, 
 	UVoltVar_BackgroundColor* CastedVar = Cast<UVoltVar_BackgroundColor>(Variable);
 
 	if (!CastedVar) return;
-
+	
 	if (SlateToApply.Pin()->GetType() == "SBorder")
 	{
 		const TSharedPtr<SBorder> CastedWidget = StaticCastSharedPtr<SBorder>(SlateToApply.Pin());
@@ -134,6 +145,60 @@ void UVoltVarAction_BackgroundColor::ApplyVariable(UVoltVariableBase* Variable, 
 		
 		return;
 	}
+
+	if (SlateToApply.Pin()->GetType() == "SButton")
+	{
+		
+		const TSharedPtr<SButton> CastedWidget = StaticCastSharedPtr<SButton>(SlateToApply.Pin());
+
+		CastedWidget->SetBorderBackgroundColor(CastedVar->Value);
+		
+		return;
+	}
+}
+
+bool UVoltVarAction_ForegroundColor::CheckSupportWidget(TWeakPtr<SWidget> Slate)
+{
+	if (Slate.IsValid())
+	{
+		const FName SlateType = Slate.Pin()->GetType();
+		if (SlateType == "SBorder") return true;
+		if (SlateType == "SButton") return true;
+	}
+
+	return false;
+}
+
+void UVoltVarAction_ForegroundColor::ApplyVariable(UVoltVariableBase* Variable, TWeakPtr<SWidget> SlateToApply)
+{
+	if (!SlateToApply.IsValid()) return;
+
+	if (!Variable) return;
+
+	UVoltVar_BackgroundColor* CastedVar = Cast<UVoltVar_BackgroundColor>(Variable);
+
+	if (!CastedVar) return;
+	
+	if (SlateToApply.Pin()->GetType() == "SBorder")
+	{
+		const TSharedPtr<SBorder> CastedWidget = StaticCastSharedPtr<SBorder>(SlateToApply.Pin());
+
+		CastedWidget->SetForegroundColor(CastedVar->Value);
+		
+		return;
+	}
+
+	if (SlateToApply.Pin()->GetType() == "SButton")
+	{
+		
+		const TSharedPtr<SButton> CastedWidget = StaticCastSharedPtr<SButton>(SlateToApply.Pin());
+
+		CastedWidget->SetForegroundColor(CastedVar->Value);
+		
+		return;
+	}
+
+	
 }
 
 bool UVoltVarAction_ChildSlotPadding::CheckSupportWidget(TWeakPtr<SWidget> Slate)
@@ -158,7 +223,7 @@ void UVoltVarAction_ChildSlotPadding::ApplyVariable(UVoltVariableBase* Variable,
 	UVoltVar_ChildSlotPadding* CastedVar = Cast<UVoltVar_ChildSlotPadding>(Variable);
 
 	if (!CastedVar) return;
-
+	
 	if (SlateToApply.Pin()->GetType() == "SBorder")
 	{
 		const TSharedPtr<SBorder> CastedWidget = StaticCastSharedPtr<SBorder>(SlateToApply.Pin());
@@ -218,14 +283,15 @@ bool UVoltVarAction_ParentSlotPadding::CheckSupportWidget(TWeakPtr<SWidget> Slat
 
 void UVoltVarAction_ParentSlotPadding::ApplyVariable(UVoltVariableBase* Variable, TWeakPtr<SWidget> SlateToApply)
 {
+		
 	if (!SlateToApply.IsValid()) return;
 
 	if (!Variable) return;
 
 	UVoltVar_ParentSlotPadding* CastedVar = Cast<UVoltVar_ParentSlotPadding>(Variable);
-
+	
 	if (!CastedVar) return;
-
+	
 	TSharedPtr<SWidget> ParentSlate = SlateToApply.Pin()->GetParentWidget();
 
 	if (SlateToApply.Pin()->GetParentWidget() == nullptr) return;
@@ -233,7 +299,7 @@ void UVoltVarAction_ParentSlotPadding::ApplyVariable(UVoltVariableBase* Variable
 	if (ParentSlate->GetType() == "SBorder")
 	{
 		const TSharedPtr<SBorder> CastedParentWidget = StaticCastSharedPtr<SBorder>(ParentSlate);
-
+		
 		CastedParentWidget->SetPadding(CastedVar->Value);
 
 		return;
@@ -327,3 +393,45 @@ void UVoltVarAction_ParentSlotPadding::ApplyVariable(UVoltVariableBase* Variable
 	}
 }
 
+
+bool UVoltVarAction_Box::CheckSupportWidget(TWeakPtr<SWidget> Slate)
+{
+	if (Slate.IsValid())
+	{
+		const FName SlateType = Slate.Pin()->GetType();
+		if (SlateType == "SBox") return true;
+	}
+
+	return false;
+}
+
+void UVoltVarAction_Box::ApplyVariable(UVoltVariableBase* Variable, TWeakPtr<SWidget> SlateToApply)
+{
+	if (!SlateToApply.IsValid()) return;
+
+	if (!Variable) return;
+
+	UVoltVar_Box* CastedVar = Cast<UVoltVar_Box>(Variable);
+
+	if (!CastedVar) return;
+	
+	if (SlateToApply.Pin()->GetType() == "SBox")
+	{
+		const TSharedPtr<SBox> CastedParentWidget = StaticCastSharedPtr<SBox>(SlateToApply.Pin());
+
+		if(CastedVar->bOverride_HeightOverride) CastedParentWidget->SetHeightOverride(CastedVar->HeightOverride);
+		if(CastedVar->bOverride_WidthOverride) CastedParentWidget->SetWidthOverride(CastedVar->WidthOverride);
+
+		if(CastedVar->bOverride_MinDesiredHeight) CastedParentWidget->SetMinDesiredHeight(CastedVar->MinDesiredHeight);
+		if(CastedVar->bOverride_MinDesiredWidth) CastedParentWidget->SetMinDesiredWidth(CastedVar->MinDesiredWidth);
+
+		if(CastedVar->bOverride_MaxDesiredHeight) CastedParentWidget->SetMaxDesiredHeight(CastedVar->MaxDesiredHeight);
+		if(CastedVar->bOverride_MaxDesiredWidth) CastedParentWidget->SetMaxDesiredWidth(CastedVar->MaxDesiredWidth);
+		
+		if(CastedVar->bOverride_MinAspectRatio) CastedParentWidget->SetMinAspectRatio(CastedVar->MinAspectRatio);
+		if(CastedVar->bOverride_MaxAspectRatio) CastedParentWidget->SetMaxAspectRatio(CastedVar->MaxAspectRatio);
+
+		return;
+	}
+
+}

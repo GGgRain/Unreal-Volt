@@ -7,6 +7,6 @@ UVolt_ASA_ChangeColor::UVolt_ASA_ChangeColor(const FObjectInitializer& ObjectIni
 {
 	UVolt_ASM_InterpColor* SlotModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpColor>(this,"ColorInterp");
 	Modules.Add(SlotModule);
-	SlotModule->InterpSpeed = 7;
+	SlotModule->RateBasedInterpSpeed = 7;
 }
 

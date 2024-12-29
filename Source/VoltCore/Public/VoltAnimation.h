@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "VoltSubModuleInterface.h"
 #include "Templates/SubclassOf.h"
 #include "UObject/NoExportTypes.h"
 #include "VoltAnimation.generated.h"
@@ -17,46 +18,21 @@ class UVoltModuleItem;
  * The animation asset class for the slates. It only contains data.
  */
 UCLASS()
-class VOLTCORE_API UVoltAnimation : public UObject
+class VOLTCORE_API UVoltAnimation : public UObject, public IVoltSubModuleInterface
 {
 	GENERATED_BODY()
-	
-public:
-
-	//Modules
-	UPROPERTY(Instanced, EditAnywhere, Category="Animation")
-	TArray<UVoltModuleItem*> Modules;
 
 public:
 
-	UFUNCTION(BlueprintCallable, Category="Animation", DisplayName="GetModuleForClass")
-	UVoltModuleItem* K2_GetModuleForClass(const TSubclassOf<UVoltModuleItem> TargetModuleClass);
+	//Modules that this animation uses.
+	UPROPERTY(Instanced, BlueprintReadWrite, Category="Animation")
+		TArray<UVoltModuleItem*> Modules; 
+
+	VOLT_DECLARE_SUBMODULE_FUNCTIONS(Modules)
 	
 public:
 
 	UFUNCTION(BlueprintCallable, Category="Animation")
 	const bool IsActive() const;
-
-public:
-
-	//for C++ usage. 
-	template<typename AnimClass=UVoltModuleItem>
-	AnimClass* GetModuleForClass();
 	
 };
-
-template <typename AnimClass>
-AnimClass* UVoltAnimation::GetModuleForClass()
-{
-
-	UVoltModuleItem* Module = K2_GetModuleForClass(AnimClass::StaticClass());
-	
-	return Module ? Cast<AnimClass>(K2_GetModuleForClass(AnimClass::StaticClass())) : nullptr;
-}
-
-
-template<typename AnimType = UVoltAnimation>
-FORCEINLINE AnimType* VOLT_GET_ANIMATION(TSubclassOf<UVoltAnimation> InAnimType, UObject* Owner = GetTransientPackage())
-{
-	return NewObject<AnimType>(Owner,InAnimType);
-}

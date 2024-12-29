@@ -47,3 +47,4 @@ public:
 	TWeakPtr<SWidget> Widget;
 
 };
+

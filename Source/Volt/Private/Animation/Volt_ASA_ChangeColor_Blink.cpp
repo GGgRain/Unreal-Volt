@@ -7,22 +7,43 @@
 
 UVolt_ASA_ChangeColor_Blink::UVolt_ASA_ChangeColor_Blink(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	
 	UVolt_ASM_Sequence* SequenceModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_Sequence>(this,"Sequence");
 	Modules.Add(SequenceModule);
 	
 	UVolt_ASM_InterpColor* ColorInModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpColor>(this,"ColorInterpIn");
-	ColorInModule->InterpSpeed = 10;
+	ColorInModule->RateBasedInterpSpeed = 10;
 
 	UVolt_ASM_InterpColor* ColorOutModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpColor>(this,"ColorInterpOut");
-	ColorOutModule->InterpSpeed = 10;
+	ColorOutModule->RateBasedInterpSpeed = 10;
 
 	SequenceModule->Modules.Add(ColorInModule);
 	SequenceModule->Modules.Add(ColorOutModule);
 	
-
-	//UVolt_ASM_InterpColor* ColorInModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpColor>(this,"ColorInterpIn");
-	//Modules.Add(ColorInModule);
+	
+	/*
+	 *
+	*	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)
+	(
+		VOLT_MAKE_MODULE(UVolt_ASM_InterpColor)
+		.InterpSpeed(123)
+		.StartColor(FLinearColor::Yellow),
+		VOLT_MAKE_MODULE(UVolt_ASM_InterpColor)
+		.InterpSpeed(4)
+		.StartColor(FLinearColor::Blue)
+	);
+	
+	VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
+		.bShouldLoop(false)
+		[
+			VOLT_MAKE_MODULE(UVolt_ASM_InterpColor)
+				.InterpSpeed(5)
+				.StartColor(FLinearColor::Black),
+			VOLT_MAKE_MODULE(UVolt_ASM_InterpColor)
+				.InterpSpeed(5)
+				.StartColor(FLinearColor::Black)
+		],
+	*/
 
 }
+
 

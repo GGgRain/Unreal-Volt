@@ -49,7 +49,7 @@ public class VoltCore : ModuleRules
 				"Slate",
 				"SlateCore",
 				"UMG",
-				"DeveloperSettings",
+				"DeveloperSettings", 
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

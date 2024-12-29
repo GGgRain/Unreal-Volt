@@ -5,150 +5,147 @@
 #include "VoltAnimationTrack.h"
 #include "VoltInterface.h"
 #include "VoltModuleItem.h"
-#include "VoltProxy.h"
-#include "VoltSettings.h"
 #include "VoltVariableBase.h"
 #include "VoltVariableCollection.h"
 
-TArray<FVoltAnimationTrack> UVoltAnimationManager::PlayAnimationForAll(const UVoltAnimation* Animation)
-{
-	TArray<FVoltAnimationTrack> NewTracks;
 
-	for (const TScriptInterface<IVoltInterface>& AnimatedCharacterSlate : Volts)
-	{
-		const FVoltAnimationTrack& NewTrack = PlayAnimationFor(AnimatedCharacterSlate, Animation);
-
-		NewTracks.Add(NewTrack);
-	}
-
-	return NewTracks;
-}
-
-
-FVoltAnimationTrack UVoltAnimationManager::PlayAnimationFor(TScriptInterface<IVoltInterface> SlateInterface,
+FVoltAnimationTrack UVoltAnimationManager::PlayAnimationFor(TScriptInterface<IVoltInterface> TargetVoltInterface,
                                                             const UVoltAnimation* Animation)
 {
-
-#if WITH_EDITOR
-	if (!Animation)
+	if (Animation == nullptr)
 	{
+#if WITH_EDITOR
 		UE_LOG(LogTemp, Error, TEXT("An empty animation has been requested to be played. Reverted the action."));
-	}
 #endif
+		return FVoltAnimationTrack::NullTrack; // Revert of there is no animation to play.
+	}
 
-	if (!Animation) return FVoltAnimationTrack::NullTrack; // Revert of there is no animation to play.
-
-#if WITH_EDITOR
-	if (SlateInterface == nullptr)
+	if (TargetVoltInterface == nullptr || !TargetVoltInterface.GetInterface())
 	{
+#if WITH_EDITOR
 		UE_LOG(LogTemp, Error,
 		       TEXT("An invalid slate interface has been requested to play an animation for. Reverted the action."));
-	}
 #endif
+		return FVoltAnimationTrack::NullTrack; // Revert of there is no animation to play.
+	}
 
-	if (SlateInterface == nullptr) return FVoltAnimationTrack::NullTrack;
-	// Revert if there is no widget to apply the animation
+	const FVoltAnimationTrack& Track = MakeTrackWith(TargetVoltInterface, Animation);
 
-	if (!CheckHasSlate(SlateInterface)) AssignSlate(SlateInterface);
+	EnqueueOnAddAnimationTrack(Track);
+
+	return Track;
+}
+
+FVoltAnimationTrack UVoltAnimationManager::MakeTrackWith(TScriptInterface<IVoltInterface> VoltInterface,
+                                                         const UVoltAnimation* Animation)
+{
+	if (Animation == nullptr || VoltInterface == nullptr)
+	{
+		return FVoltAnimationTrack::NullTrack;
+	}
 
 	UVoltAnimation* AnimationInstance = DuplicateObject<UVoltAnimation>(Animation, this);
+
+	if (!AnimationInstance)
+	{
+		return FVoltAnimationTrack::NullTrack;
+	}
 
 	for (UVoltModuleItem* Module : AnimationInstance->Modules)
 	{
 		if (!Module) continue;
 
-		Module->SetVoltSlate(SlateInterface);
+		Module->SetVoltSlate(VoltInterface);
 	}
 
+	return FVoltAnimationTrack(VoltInterface, AnimationInstance);
+}
 
-	//Duplicate the modules.
-	/*
-	AnimationInstance->Modules.Empty();
+void UVoltAnimationManager::EnqueueOnAddAnimationTrack(const FVoltAnimationTrack& Track)
+{
+	if (!AddAnimationTrackQueue.Contains(Track))
+	{
+		AddAnimationTrackQueue.Add(Track);
+	}
+}
 
-	AnimationInstance->Modules.Reserve(Animation->Modules.Num());
+void UVoltAnimationManager::EnqueueOnDeleteAnimationTrack(const FVoltAnimationTrack& Track)
+{
+	if (!DeleteAnimationTrackQueue.Contains(Track))
+	{
+		DeleteAnimationTrackQueue.Add(Track);
+	}
+}
+
+void UVoltAnimationManager::DequeueOnAddAnimationTrack(const FVoltAnimationTrack& Track)
+{
+	AddAnimationTrackQueue.Remove(Track);
+}
+
+void UVoltAnimationManager::DequeueOnDeleteAnimationTrack(const FVoltAnimationTrack& Track)
+{
+	DeleteAnimationTrackQueue.Remove(Track);
+}
+
+void UVoltAnimationManager::ApplyQueuedAnimationTrackRequests()
+{
+	for (FVoltAnimationTrack& DeletionQueue : DeleteAnimationTrackQueue)
+	{
+		ProcessDeleteAnimationTrack(DeletionQueue);
+	}
 	
-	for (const UVoltModuleItem* Module : Animation->Modules)
+	for (FVoltAnimationTrack& AdditionQueue : AddAnimationTrackQueue)
 	{
-		if(Module == nullptr) continue;
-		UVoltModuleItem* DuplicatedModule = DuplicateObject<UVoltModuleItem>(Module, this);
-
-		//Set the module to work with the slate.
-		DuplicatedModule->SetVolt(SlateInterface);
-		
-		AnimationInstance->Modules.Emplace(DuplicatedModule);
+		ProcessAddAnimationTrack(AdditionQueue);
 	}
-	*/
 
-	if (!AnimationInstance) return FVoltAnimationTrack::NullTrack;
+	AddAnimationTrackQueue.Empty();
+	DeleteAnimationTrackQueue.Empty();
+}
 
-	const FVoltAnimationTrack& Track = AnimationTracks.Add_GetRef(
-		FVoltAnimationTrack(SlateInterface, AnimationInstance));
+void UVoltAnimationManager::ProcessAddAnimationTrack(FVoltAnimationTrack& Track)
+{
+	if (OnTrackAdded.IsBound())
+	{
+		OnTrackAdded.Broadcast(this, Track);
+	}
 
 	//Broadcast the event.
-	if (OnTrackAdded.IsBound()) OnTrackAdded.Broadcast(this, Track);
+	if (OnAnimationPlayed.IsBound())
+	{
+		OnAnimationPlayed.Broadcast(this, Track, Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
+	}
+
+	AnimationTracks.Add(Track);
+	
+}
+
+void UVoltAnimationManager::ProcessDeleteAnimationTrack(FVoltAnimationTrack& Track)
+{
 
 	//Broadcast the event.
-	if (OnAnimationPlayed.IsBound()) OnAnimationPlayed.Broadcast(this, Track, Track.TargetAnimation.Get());
-
-	return Track;
-}
-
-FVoltAnimationTrack UVoltAnimationManager::PlayAnimationAt(const int& Index, const UVoltAnimation* Animation)
-{
-	if (!Volts.IsValidIndex(Index)) return FVoltAnimationTrack::NullTrack;
-	return PlayAnimationFor(Volts[Index], Animation);
-}
-
-void UVoltAnimationManager::TickAnimations(float DeltaTime)
-{
-	for (FVoltAnimationTrack& AnimationTrack : AnimationTracks)
+	if (OnAnimationEnded.IsBound())
 	{
-		if (!AnimationTrack.TargetAnimation) continue;
-
-		if (!AnimationTrack.TargetSlateInterface) continue;
-
-		for (UVoltModuleItem* Module : AnimationTrack.TargetAnimation->Modules)
-		{
-			if (!Module)
-			{
-#if WITH_EDITOR
-				UE_LOG(LogTemp, Log, TEXT("There is a empty module slot in the %s. Please check out the asset.")
-				       , *AnimationTrack.TargetAnimation.Get()->GetPathName());
-#endif
-
-				continue;
-			}
-
-			if (!AnimationTrack.TargetSlateInterface.GetObject())
-			{
-#if WITH_EDITOR
-				UE_LOG(LogTemp, Log,
-				       TEXT(
-					       "VoltAnimationManager %s detected a slate interface that was not derived from UObject has been provided. Make sure to derive it from UObject."
-				       ), *this->GetName());
-#endif
-
-				continue;
-			}
-
-			if (!Module->IsActive()) continue;
-
-			Module->ModifySlateVariable(DeltaTime, AnimationTrack.TargetSlateInterface);
-		}
-
-		UVoltVariableCollection* Collection = AnimationTrack.TargetSlateInterface->
-			GetVoltVariableCollection();
-
-		if (!Collection) continue;
-
-		for (UVoltVariableBase* Variable : Collection->GetVariables())
-		{
-			Variable->ApplyVariable(AnimationTrack.TargetSlateInterface->GetTargetSlate());
-		}
+		OnAnimationEnded.Broadcast(this, Track, Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
 	}
+	//Broadcast the event.
+	if (OnTrackRemoved.IsBound())
+	{
+		OnTrackRemoved.Broadcast(this, Track);
+	}
+	
+	//Release its animation.
+	if (Track.TargetAnimation)
+	{
+		Track.TargetAnimation->Modules.Empty();
+		Track.TargetAnimation = nullptr;
+	}
+
+	AnimationTracks.Remove(Track);
 }
 
-void UVoltAnimationManager::FlushUnnecessaryAnimation()
+
+void UVoltAnimationManager::FlushUnnecessaryTrack()
 {
 	const int num = AnimationTracks.Num();
 
@@ -166,89 +163,59 @@ void UVoltAnimationManager::FlushUnnecessaryAnimation()
 		if (!TrackRef.TargetAnimation->IsActive())
 		{
 			FlushTrackAt(index);
-			continue;
 		}
 	}
 }
 
-void UVoltAnimationManager::UpdateAnimations(float DeltaTime)
-{
-	TickAnimations(DeltaTime);
-
-	FlushUnnecessaryAnimation();
-}
 
 bool UVoltAnimationManager::HasTrack(const FVoltAnimationTrack& Track)
 {
 	const int FoundIndex = AnimationTracks.Find(Track);
 
 	//Revert if it was unable to find the index of the target.
-	if (FoundIndex == INDEX_NONE) return false;
+	if (FoundIndex == INDEX_NONE)
+	{
+		return false;
+	}
 
 	return true;
 }
 
 void UVoltAnimationManager::FlushTrack(const FVoltAnimationTrack& Track)
 {
-	const int FoundIndex = AnimationTracks.Find(Track);
-
-	//Revert if it was unable to find the index of the target.
-	if (FoundIndex == INDEX_NONE) return;
-
-	FlushTrackAt(FoundIndex);
+	//If add queue has this one, remove as well.
+	DequeueOnAddAnimationTrack(Track);
+	
+	//Book that up for the deletion.
+	EnqueueOnDeleteAnimationTrack(Track);
 }
 
 void UVoltAnimationManager::FlushTrackAt(const int Index)
 {
-	if (!AnimationTracks.IsValidIndex(Index)) return;
+	if (!AnimationTracks.IsValidIndex(Index))
+	{
+		return;
+	}
 
 	//Get the reference of the track from the array and use it instead of the provided track to avoid corruption.
 	FVoltAnimationTrack& TrackRefToRemove = AnimationTracks[Index];
 
-	//Broadcast the event.
-	if (OnAnimationEnded.IsBound())
-		OnAnimationEnded.Broadcast(this, TrackRefToRemove,
-		                           TrackRefToRemove.TargetAnimation.Get());
-	//Broadcast the event.
-	if (OnTrackRemoved.IsBound()) OnTrackRemoved.Broadcast(this, TrackRefToRemove);
-
-
-	//Release its animation.
-	if (TrackRefToRemove.TargetAnimation)
-	{
-		//Release its animation's modules.
-		/*
-		for (UVoltModuleItem* Module : TrackRefToRemove.TargetAnimation->Modules)
-		{
-			if (!Module) continue;
-			Module->Rename(nullptr, GetTransientPackage());
-			Module->MarkAsGarbage();
-		}
-		TrackRefToRemove.TargetAnimation->Modules.Empty();
-		
-		//for some unfortunate occasions.
-		if(TrackRefToRemove.TargetAnimation->IsRooted()) TrackRefToRemove.TargetAnimation->RemoveFromRoot();
-		TrackRefToRemove.TargetAnimation->Rename(nullptr, GetTransientPackage());
-		if(!TrackRefToRemove.TargetAnimation->IsRooted()) TrackRefToRemove.TargetAnimation->MarkAsGarbage();
-		TrackRefToRemove.TargetAnimation = nullptr;
-		*/
-		TrackRefToRemove.TargetAnimation->Modules.Empty();
-		TrackRefToRemove.TargetAnimation = nullptr;
-	}
-
-	AnimationTracks.RemoveAt(Index);
+	FlushTrack(TrackRefToRemove);
 }
 
-void UVoltAnimationManager::FlushTracksFor(TScriptInterface<IVoltInterface> TargetSlateInterface)
+void UVoltAnimationManager::FlushTracksFor(TScriptInterface<IVoltInterface> TargetVoltInterface)
 {
-	if (!CheckHasSlate(TargetSlateInterface)) return;
-
 	const int num = AnimationTracks.Num();
 
 	//Iterate the array backward.
 	for (int index = num - 1; index >= 0; --index)
 	{
-		if (AnimationTracks[index].TargetSlateInterface == TargetSlateInterface) FlushTrack(AnimationTracks[index]);
+		if(!AnimationTracks.IsValidIndex(index)) continue;
+
+		if (FVoltAnimationTrack& Track = AnimationTracks[index]; Track.TargetSlateInterface.GetInterface() == TargetVoltInterface.GetInterface())
+		{
+			FlushTrack(AnimationTracks[index]);
+		}
 	}
 }
 
@@ -261,8 +228,6 @@ void UVoltAnimationManager::FlushAllTracks()
 	{
 		FlushTrackAt(index);
 	}
-
-	AnimationTracks.Empty();
 }
 
 const TArray<FVoltAnimationTrack>& UVoltAnimationManager::GetAnimationTracks()
@@ -270,134 +235,169 @@ const TArray<FVoltAnimationTrack>& UVoltAnimationManager::GetAnimationTracks()
 	return AnimationTracks;
 }
 
-const TArray<TScriptInterface<IVoltInterface>>& UVoltAnimationManager::GetVolts()
-{
-	return Volts;
-}
-
-TScriptInterface<IVoltInterface> UVoltAnimationManager::AssignSlate(
-	TScriptInterface<IVoltInterface> SlateToAdd)
-{
-	const TScriptInterface<IVoltInterface> FoundSlate = FindSlateFor(SlateToAdd);
-	if (FoundSlate != nullptr) return FoundSlate;
-
-	Volts.Add(SlateToAdd);
-
-	return SlateToAdd;
-}
-
-TScriptInterface<IVoltInterface> UVoltAnimationManager::AssignSlate(
-	const TWeakPtr<SWidget>& SlateToAdd)
-{
-	const TScriptInterface<IVoltInterface> FoundSlate = FindSlateFor(SlateToAdd);
-	if (FoundSlate != nullptr) return FoundSlate;
-
-	UVoltProxy* Proxy = NewObject<UVoltProxy>(this);
-
-	Proxy->Widget = SlateToAdd;
-
-	Volts.Add(Proxy);
-
-	return Proxy;
-}
-
-TScriptInterface<IVoltInterface> UVoltAnimationManager::FindSlateFor(
-	const TScriptInterface<IVoltInterface>& SlateInterfaceToCheck) const
-{
-	return (Volts.Contains(SlateInterfaceToCheck)) ? SlateInterfaceToCheck : nullptr;
-}
-
-TScriptInterface<IVoltInterface> UVoltAnimationManager::FindSlateFor(
-	const TWeakPtr<SWidget>& SlateToFind) const
-{
-	for (const TScriptInterface<IVoltInterface>& VoltInterface : Volts)
-	{
-		if (VoltInterface->GetTargetSlate() == SlateToFind) return VoltInterface;
-	}
-	return nullptr;
-}
-
-TScriptInterface<IVoltInterface> UVoltAnimationManager::FindOrAssignSlate(
-	const TScriptInterface<IVoltInterface>& SlateInterfaceToAdd)
-{
-	const TScriptInterface<IVoltInterface> FoundSlate = FindSlateFor(SlateInterfaceToAdd);
-	if (FoundSlate != nullptr) return FoundSlate;
-
-	return AssignSlate(SlateInterfaceToAdd);
-}
-
-
-TScriptInterface<IVoltInterface> UVoltAnimationManager::FindOrAssignSlate(
-	const TWeakPtr<SWidget>& SlateToFind)
-{
-	const TScriptInterface<IVoltInterface> FoundSlate = FindSlateFor(SlateToFind);
-	if (FoundSlate != nullptr) return FoundSlate;
-
-	return AssignSlate(SlateToFind);
-}
-
-bool UVoltAnimationManager::CheckHasSlate(
-	const TScriptInterface<IVoltInterface>& SlateInterfaceToCheck) const
-{
-	return (FindSlateFor(SlateInterfaceToCheck) != nullptr);
-}
-
-
-bool UVoltAnimationManager::CheckHasSlate(const TWeakPtr<SWidget>& SlateToCheck) const
-{
-	return (FindSlateFor(SlateToCheck) != nullptr);
-}
-
-int UVoltAnimationManager::GetSlateCount() const
-{
-	return Volts.Num();
-}
-
 bool UVoltAnimationManager::IsPlayingAnimation()
 {
 	return !AnimationTracks.IsEmpty();
 }
 
-bool UVoltAnimationManager::CheckSlatePlayingAnimation(
-	const TScriptInterface<IVoltInterface>& SlateInterfaceToCheck)
-{
-	if (!CheckHasSlate(SlateInterfaceToCheck)) return false;
-
-	for (const FVoltAnimationTrack& AnimationTrack : AnimationTracks)
-	{
-		if (AnimationTrack.TargetSlateInterface == SlateInterfaceToCheck) return true;
-	}
-
-	return false;
-}
-
-bool UVoltAnimationManager::CheckSlatePlayingAnimation(const TWeakPtr<SWidget>& SlateToCheck)
-{
-	return CheckSlatePlayingAnimation(FindSlateFor(SlateToCheck));
-}
-
 void UVoltAnimationManager::Tick(float DeltaTime)
 {
-	UpdateAnimations(DeltaTime);
+	const UVoltSubsystem* Subsystem = UVoltSubsystem::Get();
+
+	if (!Subsystem) return;
+	
+	// Manual update - for the case whether this object can not rely on external updates (thread)
+	if (!Subsystem->IsUtilizingMultithreading())
+	{
+		ApplyQueuedAnimationTrackRequests();
+
+		if(!AnimationTracks.IsEmpty()) ProcessModuleUpdate(DeltaTime);
+	}
+
+	ApplyVariables();
+
+	// TODO: Provide better way to flush it down, and make sure to this process is not making any bottleneck
+	if (!Subsystem->IsModuleUpdateThreadWorking())
+	{
+		FlushUnnecessaryTrack();
+	}
+
 }
+
+
+void UVoltAnimationManager::ApplyVariables()
+{
+	for (FVoltAnimationTrack& AnimationTrack : AnimationTracks)
+	{
+		if (UVoltVariableCollection* Collection = AnimationTrack.TargetSlateInterface->GetVoltVariableCollection())
+		{
+			//Process all the queued variable to the actual list.
+			Collection->ProcessQueue();
+			
+			const TArray<UVoltVariableBase*>& Variables = Collection->GetVariables();
+				
+			const int IterNum = Variables.Num();
+
+			if(!AnimationTrack.TargetSlateInterface) continue;
+			
+			TWeakPtr<SWidget> Slate = AnimationTrack.TargetSlateInterface->GetTargetSlate();
+
+			if(!Slate.IsValid()) continue;
+
+			for (int i = 0; i < IterNum; ++i)
+			{
+				if (!Variables.IsValidIndex(i)) continue;
+
+				if(UVoltVariableBase* Variable = Variables[i])
+				{
+					Variable->ApplyVariable(Slate);
+				}
+			}
+			
+		}
+		
+	}
+}
+
+const TSet<FVoltInterfaceElement> UVoltAnimationManager::GetVoltInterfacesBeingAnimated()
+{
+	TSet<FVoltInterfaceElement> Set;
+
+	for (FVoltAnimationTrack& AnimationTrack : AnimationTracks)
+	{
+		Set.Add(AnimationTrack.TargetSlateInterface);
+	}
+
+	return Set;
+}
+
+
+void UVoltAnimationManager::ProcessModuleUpdate(float DeltaTime)
+{
+	for (FVoltAnimationTrack& AnimationTrack : AnimationTracks)
+	{
+		if (!AnimationTrack.TargetAnimation)
+		{
+			continue;
+		}
+
+		if (!AnimationTrack.TargetSlateInterface)
+		{
+			continue;
+		}
+
+		for (UVoltModuleItem* Module : AnimationTrack.TargetAnimation->Modules)
+		{
+			if (!Module)
+			{
+#if WITH_EDITOR
+				UE_LOG(LogTemp, Log, TEXT("There is a empty module slot in the %s. Please check out the asset.")
+					   , *AnimationTrack.TargetAnimation.Get()->GetPathName());
+#endif
+
+				continue;
+			}
+
+			if (!AnimationTrack.TargetSlateInterface.GetObject())
+			{
+#if WITH_EDITOR
+				UE_LOG(LogTemp, Log,
+					   TEXT(
+						   "VoltAnimationManager %s detected a slate interface that was not derived from UObject has been provided. Make sure to derive it from UObject."
+					   ), *this->GetName());
+#endif
+
+				continue;
+			}
+
+			if (!Module->IsBegunPlay())
+			{
+				Module->BeginPlayModule();
+			}
+			
+			if(Module->IsEndedPlay()) continue;
+
+			if (!Module->IsActive())
+			{
+				Module->EndPlayModule();
+				continue;
+			}
+
+			Module->ModifySlateVariable(DeltaTime, AnimationTrack.TargetSlateInterface);
+		}
+	}
+}
+
 
 void UVoltAnimationManager::ReleaseAll()
 {
 	//GC will handle the leftover for it.
 
 	FlushAllTracks();
-	Volts.Empty();
+
+	SetOwnerVoltInterface(nullptr);
+}
+
+void UVoltAnimationManager::SetOwnerVoltInterface(const TScriptInterface<IVoltInterface> NewOwnerVoltInterface)
+{
+	OwnerVoltInterface = NewOwnerVoltInterface;
 }
 
 bool UVoltAnimationManager::CheckShouldDestruct() const
 {
-	UVoltSubsystem* Subsystem = UVoltSubsystem::Get();
-
-	if (GetOuter() && GetOuter() != Subsystem) return false;
-
-	for (TScriptInterface<IVoltInterface> VoltInterface : Volts)
+	if (const UVoltSubsystem* Subsystem = UVoltSubsystem::Get(); GetOuter() && GetOuter() != Subsystem)
 	{
-		if (VoltInterface->GetTargetSlate().IsValid()) return false;
+		return false;
+	}
+
+	if (OwnerVoltInterface->GetTargetSlate().IsValid())
+	{
+		return false;
+	}
+
+	if (IsRooted())
+	{
+		return false;
 	}
 
 	return true;
@@ -408,24 +408,4 @@ void UVoltAnimationManager::DestructSelf()
 	ReleaseAll();
 
 	MarkAsGarbage();
-}
-
-UWorld* UVoltAnimationManager::GetWorld() const
-{
-	if(GetOuter())
-	{
-		return GetOuter()->GetWorld();
-	}
-	
-	return nullptr;
-}
-
-bool UVoltAnimationManager::CheckUseManualTick()
-{
-	return bUseManualTick;
-}
-
-void UVoltAnimationManager::SetUseManualTick(bool NewUseManualTick)
-{
-	bUseManualTick = NewUseManualTick;
 }

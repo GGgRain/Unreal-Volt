@@ -11,10 +11,10 @@ UVolt_ASA_ChangeBackgroundColor_Blink::UVolt_ASA_ChangeBackgroundColor_Blink(con
 	Modules.Add(SequenceModule);
 
 	UVolt_ASM_InterpBackgroundColor* ColorInModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpBackgroundColor>(this,"ColorInterpIn");
-	ColorInModule->InterpSpeed = 10;
+	ColorInModule->RateBasedInterpSpeed = 10;
 
 	UVolt_ASM_InterpBackgroundColor* ColorOutModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpBackgroundColor>(this,"ColorInterpOut");
-	ColorOutModule->InterpSpeed = 10;
+	ColorOutModule->RateBasedInterpSpeed = 10;
 
 	SequenceModule->Modules.Add(ColorInModule);
 	SequenceModule->Modules.Add(ColorOutModule);

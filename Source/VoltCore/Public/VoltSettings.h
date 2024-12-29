@@ -42,10 +42,31 @@ public:
 public:
 	
 	/**
-	 * The actions this variable will execute when this variable need to be applied.
-	 * Variable will execute the first action that fits with the provided slate.
-	 * Modify it to make the variables support any additional slate types that are not originated from the unreal slate architecture.
+	 * Whether to utilize multithreading on the animation module update process.
+	 * This will let your application doesn't be bottle-necked by Volt, and with slight advantage on the performance.
 	 */
-	UPROPERTY(config, EditAnywhere, Category="Volt Variable")
-	TMap<TSubclassOf<UVoltVariableBase>,FVoltVariableActionList> VariableActionsForVariable;
+	UPROPERTY(config, EditAnywhere, Category="Performance", DisplayName="Use Multithreading On Module Update")
+	bool bUseMultithreadingOnModuleUpdate = true;
+
+	/**
+	 * Interval for the animation manager clean-up (GC) code.
+	 */
+	UPROPERTY(config, EditAnywhere, Category="Performance", DisplayName="Animation Manager Clean Up Interval")
+	double AnimationManagerCleanUpInterval = 37;
+
+	
+public:
+	
+	/**
+	 * Get the singleton instance of the class.
+	 * @return The singleton instance of UVoltSettings.
+	 */
+	static UVoltSettings* Get();
+
+public:
+
+	virtual FName GetCategoryName() const override final { return TEXT("Volt"); }
+	virtual FText GetSectionText() const override final { return FText::FromString("Volt Preferences"); }
+
+	
 };

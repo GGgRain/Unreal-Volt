@@ -7,8 +7,13 @@
 #include "Variables/VoltVariables.h"
 
 
+void UVolt_ASM_SetWidgetTransformPivot::Construct(const FArguments& InArgs)
+{
+	TargetWidgetTransformPivot = InArgs._TargetWidgetTransformPivot;
+}
+
 void UVolt_ASM_SetWidgetTransformPivot::ModifySlateVariable(const float DeltaTime,
-                                                                const TScriptInterface<IVoltInterface>& Volt)
+                                                            const TScriptInterface<IVoltInterface>& Volt)
 {
 	if(Volt == nullptr) return;
 	if(Volt->GetVoltVariableCollection() == nullptr) return;

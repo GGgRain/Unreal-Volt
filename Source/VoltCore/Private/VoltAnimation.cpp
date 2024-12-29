@@ -4,22 +4,6 @@
 #include "VoltAnimation.h"
 #include "VoltModuleItem.h"
 
-
-UVoltModuleItem* UVoltAnimation::K2_GetModuleForClass(const TSubclassOf<UVoltModuleItem> TargetModuleClass)
-{
-	if (Modules.IsEmpty()) return nullptr; // Inactive since there is no module to play.
-
-	for (UVoltModuleItem* Module : Modules)
-	{
-		if (Module->GetClass() == TargetModuleClass)
-		{
-			return Module;
-		}
-	}
-
-	return nullptr;
-}
-
 const bool UVoltAnimation::IsActive() const
 {
 	if (Modules.IsEmpty()) return false; // Inactive since there is no module to play.
@@ -33,3 +17,4 @@ const bool UVoltAnimation::IsActive() const
 
 	return false;
 }
+

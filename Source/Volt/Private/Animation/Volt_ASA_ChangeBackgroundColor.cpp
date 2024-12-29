@@ -7,6 +7,6 @@ UVolt_ASA_ChangeBackgroundColor::UVolt_ASA_ChangeBackgroundColor(const FObjectIn
 {
 	UVolt_ASM_InterpBackgroundColor* SlotModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpBackgroundColor>(this,"BackgroundColorInterp");
 	Modules.Add(SlotModule);
-	SlotModule->InterpSpeed = 7;
+	SlotModule->RateBasedInterpSpeed = 7;
 }
 

@@ -39,7 +39,6 @@ public:
 	
 	/**
 	 * Caches the actions this variable will execute when this variable need to be applied.
-	 * Go project settings and visit Volt Settings to assign new actions or remove some. 
 	 */
 	UFUNCTION(BlueprintCallable, Category="Variable Action")
 	void CacheActions();
@@ -49,6 +48,8 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Variable Action")
 	void ClearCachedActions();
+
+public:
 	
 	/**
 	 * Iterate through the action and execute the action if possible.
@@ -58,9 +59,18 @@ public:
 public:
 
 	/**
+	 * Class of the variable actions that this variable will use.
+	 */
+	UPROPERTY(EditAnywhere, Category="Variable Action")
+	TArray<TSubclassOf<UVoltVariableActionBase>> ActionsForVariables;
+
+public:
+
+
+	/**
 	 * Cached actions for this variable.
 	 * We still need to implement a solid object because some of the action might can use some variables.
-	 * Though it is not that hash on the performance, so it's fine.
+	 * Though it's not that harsh on the performance. It's fine.
 	 */
 	UPROPERTY(EditAnywhere, Category="Variable Action")
 	TArray<UVoltVariableActionBase*> CachedActions;

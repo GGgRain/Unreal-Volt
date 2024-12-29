@@ -18,19 +18,10 @@ void UVoltVariableBase::CacheActions()
 	//Mark that we already cached the data even if it might fail at the cache action.
 	bCachedActions = true;
 	
-	//check some possible fails.
-	const UVoltSettings* DevSetting = GetDefault<UVoltSettings>();
-
-	if (!DevSetting) return;
-
-	if(!DevSetting->VariableActionsForVariable.Contains(this->GetClass())) return;
-
-	const TArray<TSubclassOf<UVoltVariableActionBase>>& VariableActionsForThisVariable = DevSetting->VariableActionsForVariable[this->GetClass()].Actions;
-	
 	//Make a new action bases for the variable.
-	CachedActions.Reserve(VariableActionsForThisVariable.Num());
+	CachedActions.Reserve(ActionsForVariables.Num());
 	
-	for (TSubclassOf<UVoltVariableActionBase> Action : VariableActionsForThisVariable)
+	for (TSubclassOf<UVoltVariableActionBase> Action : ActionsForVariables)
 	{
 		UVoltVariableActionBase* NewAction = NewObject<UVoltVariableActionBase>(this,Action);
 		CachedActions.Emplace(NewAction);

@@ -13,7 +13,7 @@ public:
 	GENERATED_BODY()
 
 public:
-
+	
 	UVolt_ASA_ChangeColor_Blink(const FObjectInitializer& ObjectInitializer);
 	
 };

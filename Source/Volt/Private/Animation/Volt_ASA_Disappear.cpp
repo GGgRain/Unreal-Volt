@@ -13,7 +13,7 @@ UVolt_ASA_Disappear::UVolt_ASA_Disappear(const FObjectInitializer& ObjectInitial
 	
 	UVolt_ASM_InterpWidgetTransform* Module = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpWidgetTransform>(this,"RenderTFInterp");
 	Modules.Add(Module);
-	Module->InterpSpeed = 7;
+	Module->RateBasedInterpSpeed = 7;
 	Module->bUseStartWidgetTransform = true;
 	Module->StartWidgetTransform = FWidgetTransform(
 		FVector2D::ZeroVector,
@@ -31,7 +31,7 @@ UVolt_ASA_Disappear::UVolt_ASA_Disappear(const FObjectInitializer& ObjectInitial
 	Modules.Add(SlotModule);
 	SlotModule->bUseStartOpacity = true;
 	SlotModule->StartOpacity = 1;
-	SlotModule->InterpSpeed = 7;
+	SlotModule->RateBasedInterpSpeed = 7;
 	SlotModule->TargetOpacity = 0;
 
 	UVolt_ASM_SetWidgetTransformPivot* PivotModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_SetWidgetTransformPivot>(this,"PivotSet");
