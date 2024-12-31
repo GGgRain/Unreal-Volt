@@ -5,6 +5,9 @@ Volt is a simple, modular animation Library for Unreal Slate Architecture powere
 This library is part of [Joint](https://www.unrealengine.com/marketplace/ko/product/ec432b9261c94b70a4068507d42a4f5a) Project, a powerful full-modular conversation scripting framework, especially Volt took place in the editor module to animate the slates on the editor without limitation on the production and performances. 
 The project's distribution intends to enable you to use it on your editor for the visual part. Let's make Unreal's editor beautiful! 
 
++ 24.12.31 : Volt 1.1 has been released and a ton has been changed since v1.0! Please check out the release note: https://gggrain.github.io/Unreal-Joint-Documentation/docs/release_note/Volt/1_1_0
+
+
 ## Usecases
 [Joint](https://www.unrealengine.com/marketplace/ko/product/ec432b9261c94b70a4068507d42a4f5a), and [Joint Native](https://github.com/GGgRain/Joint-Native) is using this plugin to animated their editor slates. Please let us know if you want to share your great project with Volt!
 
