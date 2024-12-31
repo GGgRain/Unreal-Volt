@@ -128,11 +128,14 @@ public:
 
 	//AlphaBased
 	
+	/**
+	 * EasingFunction to use on the alpha based interpolation.
+	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="AlphaBased")
 	TEnumAsByte<EEasingFunc::Type> AlphaBasedEasingFunction = EEasingFunc::Linear;
 
 	/**
-	 * Alpha of the interpolation. You can also manually
+	 * Alpha of the interpolation. You can also manually update the alpha externally.
 	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="AlphaBased")
 	double AlphaBasedEaseAlpha = 0;

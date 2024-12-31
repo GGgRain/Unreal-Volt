@@ -492,6 +492,7 @@ void SVoltStarshipScrollElement::PlayAnimation(const double& Interval)
 		)
 	);
 
+
 	VOLT_PLAY_ANIM(AnimationManager, Border->AsShared(), Anim);
 }
 

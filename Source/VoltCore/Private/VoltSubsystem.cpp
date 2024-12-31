@@ -234,7 +234,7 @@ void UVoltSubsystem::DiscardInvalidVoltInterfaces()
 
 void UVoltSubsystem::CacheCleanUpInterval()
 {
-	CleanUpInterval = UVoltSettings::Get()->AnimationManagerCleanUpInterval;
+	CleanUpInterval = UVoltSettings::Get()->VoltSubsystemCleanUpInterval;
 }
 
 void UVoltSubsystem::OnSlateApplicationPreTick(float DeltaTime)

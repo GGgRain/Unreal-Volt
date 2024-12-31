@@ -18,31 +18,6 @@ UVolt_ASA_ChangeColor_Blink::UVolt_ASA_ChangeColor_Blink(const FObjectInitialize
 
 	SequenceModule->Modules.Add(ColorInModule);
 	SequenceModule->Modules.Add(ColorOutModule);
-	
-	
-	/*
-	 *
-	*	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)
-	(
-		VOLT_MAKE_MODULE(UVolt_ASM_InterpColor)
-		.InterpSpeed(123)
-		.StartColor(FLinearColor::Yellow),
-		VOLT_MAKE_MODULE(UVolt_ASM_InterpColor)
-		.InterpSpeed(4)
-		.StartColor(FLinearColor::Blue)
-	);
-	
-	VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
-		.bShouldLoop(false)
-		[
-			VOLT_MAKE_MODULE(UVolt_ASM_InterpColor)
-				.InterpSpeed(5)
-				.StartColor(FLinearColor::Black),
-			VOLT_MAKE_MODULE(UVolt_ASM_InterpColor)
-				.InterpSpeed(5)
-				.StartColor(FLinearColor::Black)
-		],
-	*/
 
 }
 

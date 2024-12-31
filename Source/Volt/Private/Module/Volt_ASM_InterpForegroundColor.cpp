@@ -36,6 +36,7 @@ void UVolt_ASM_InterpForegroundColor::ModifySlateVariable(const float DeltaTime,
 	UVoltVariableBase* Var = Volt->GetVoltVariableCollection()->FindOrAddVariable(UVoltVar_ForegroundColor::StaticClass());
 
 	UVoltVar_ForegroundColor* CastedVar = Cast<UVoltVar_ForegroundColor>(Var);
+
 	
 	//interp
 	switch (InterpolationMode)

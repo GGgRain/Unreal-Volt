@@ -177,7 +177,7 @@ TSharedRef<SWidget> SVoltStarship::MakeToolbar()
 	ToolbarBuilder.BeginSection("Main");
 
 	ToolbarBuilder.EndSection();
-
+	
 	return ToolbarBuilder.MakeWidget();
 }
 

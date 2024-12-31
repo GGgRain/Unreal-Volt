@@ -11,9 +11,6 @@
 class UVoltAnimation;
 class UVoltModuleItem;
 
-//Assign animation module to the target animation. Must be called in CDO and not elsewhere.
-//#define VOLT_ANIMATION_ASSIGN_DEFAULT_MODULE(ModuleType, ModuleName)  Modules.Add_GetRef(CreateDefaultSubobject<ModuleType>(ModuleName))
-
 /**
  * The animation asset class for the slates. It only contains data.
  */

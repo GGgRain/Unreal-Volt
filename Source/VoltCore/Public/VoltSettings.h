@@ -49,10 +49,10 @@ public:
 	bool bUseMultithreadingOnModuleUpdate = true;
 
 	/**
-	 * Interval for the animation manager clean-up (GC) code.
+	 * Interval for the Volt Subsystem clean-up (GC) code.
 	 */
-	UPROPERTY(config, EditAnywhere, Category="Performance", DisplayName="Animation Manager Clean Up Interval")
-	double AnimationManagerCleanUpInterval = 37;
+	UPROPERTY(config, EditAnywhere, Category="Performance", DisplayName="Volt Subsystem Clean Up Interval")
+	double VoltSubsystemCleanUpInterval = 37;
 
 	
 public:

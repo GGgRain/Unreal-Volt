@@ -53,7 +53,7 @@ void UVoltEditorSettings::ResetPerformanceSettings(const bool bSaveConfig)
 	if(UVoltSettings* Setting = UVoltSettings::Get())
 	{
 		Setting->bUseMultithreadingOnModuleUpdate = true;
-		Setting->AnimationManagerCleanUpInterval = 37;
+		Setting->VoltSubsystemCleanUpInterval = 37;
 	}
 	if(bSaveConfig) MACRO_SAVE_RUNTIME_CONFIG()
 	
