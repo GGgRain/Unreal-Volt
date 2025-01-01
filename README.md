@@ -98,7 +98,7 @@ UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)
 VOLT_PLAY_ANIM(AnimationManager, Border, BorderColorAnim);
 ```
 
-Considering the main reason why there are not so many plugins or system with animated UI are mostly come from the complexity of the vanila Unreal Engine's Slate animation development process (It's horribly slow and difficult to achieve), The level of simplexity of the usage of Volt will let you make much more detailed and creative visual productions.
+Considering the main reason why there are not so many plugins or systems with animated UI mostly comes from the complexity of the vanilla Unreal Engine's Slate animation development process (It's horribly slow and difficult to achieve), The level of simplexity of the usage of Volt will let you make much more detailed and creative visual productions.
 
 
 ### 3. Light-Weighted Performance & Multithreading Support
@@ -109,7 +109,7 @@ It tries to reduce the amount of memory usage, total object counts and iteration
 
 Plus, Volt never makes bottleneck on the game thread, because it works with multithreading - many of the intensive actions are all done in an independent thread. This lets users focus solely on the animation development while not caring too much about the performance issue.
 
-Also, Many features including querying slate instances or animation tracks are designed to be fast enough ( O(1) ) to support maximum performance - thus Volt could be practical enough for every project.
+Also, many features including querying slate instances or animation tracks are designed to be fast enough ( O(1) ) to support maximum performance - thus Volt could be practical enough for every project.
 
 ## :inbox_tray: Installation ##
 
@@ -150,9 +150,9 @@ VOLT_IMPLEMENT_MANAGER(&AnimationManager, SharedThis(this));
 ```
 ### Declaring Animation & Modules
 
-Now its time to make an actual animation instance. You can use ```VOLT_MAKE_ANIMATION( AnimationClassName )``` macro to declare a new animation with the provided type animation (typically ```UVoltAnimation```) and ```VOLT_MAKE_MODULE( ModuleClassName )``` macro to create a module for the provided module class.
+Now it's time to make an actual animation instance. You can use ```VOLT_MAKE_ANIMATION( AnimationClassName )``` macro to declare a new animation with the provided type animation (typically ```UVoltAnimation```) and ```VOLT_MAKE_MODULE( ModuleClassName )``` macro to create a module for the provided module class.
 
-And you can wrap modules with ```( )``` to feed the modules to the animation, then the animation will get those modules and use them to animate the slate.
+You can wrap modules with ```( )``` to feed the modules to the animation, then the animation will get those modules and use them to animate the slate.
 
 > [!TIP]
 > ```() operator``` (wrapping modules with ```( )```) also works for the modules that can have submodules on providing submodules for them.  
@@ -160,7 +160,7 @@ And you can wrap modules with ```( )``` to feed the modules to the animation, th
 
 In this example, You can see that ```UVoltAnimation``` object will be created with ```UVolt_ASM_Sequence``` inside, which has 2 submodules (```UVolt_ASM_InterpWidgetTransform```) that will animate the slate's render transform as provided.
 
-You can also see that this animation will works like this: changing a slate's render transform to make it move and forth (```UVolt_ASM_InterpWidgetTransform```, first one will animate the slate's X location like -50 -> 50, second one will animate it 50 -> -50 )  continuously. (```UVolt_ASM_Sequence```, loop has been enabled by 	.bShouldLoop(true)
+You can also see that this animation will work like this: changing a slate's render transform to make it move and forth (```UVolt_ASM_InterpWidgetTransform```, first one will animate the slate's X location like -50 -> 50, second one will animate it 50 -> -50 )  continuously. (```UVolt_ASM_Sequence```, loop has been enabled by 	.bShouldLoop(true)
 )
 
 ```cpp
@@ -181,6 +181,27 @@ UVoltAnimation* Animation = VOLT_MAKE_ANIMATION(UVoltAnimation) (
 	)
 )
 ```
+
+> [!NOTE]
+> In Volt 1.1, We officially supports 11 modules for the system:
+> 
+> General Modules; Can be used to control the playback of the animation or other modules: 
+> + ```UVolt_ASM_Sequence``` : a module that plays the submodules sequentially (One-By-One) while waiting the previous module to be ended.
+> + ```UVolt_ASM_Simultaneous``` : a module that plays the submodules Simultaneously (All-At-Once). It's designed to be used with ```UVolt_ASM_Sequence``` since animation's module playback is simultaneous by default.
+> + ```UVolt_ASM_Delay``` : a module that will be active for the specified duration. This is useful to use with ```UVolt_ASM_Sequence``` to create delayed animation.
+> 
+> Interpolation Related Modules; Interpolate specific variables of the target slate. they all supports various interpolation modes for your more dynamic animation production.
+> 
+> https://github.com/user-attachments/assets/4b95cd22-e24a-4c73-a76e-6c45a3975fcd
+> 
+> + ```UVolt_ASM_InterpBackgroundColor```
+> + ```UVolt_ASM_InterpBoxProperties``` : (SBox specific)
+> + ```UVolt_ASM_InterpChildSlotPadding```
+> + ```UVolt_ASM_InterpColor```
+> + ```UVolt_ASM_InterpForegroundColor```
+> + ```UVolt_ASM_InterpRenderOpacity```
+> + ```UVolt_ASM_InterpWidgetTransform```
+
 
 ### Playing Animation
 
