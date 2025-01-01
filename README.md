@@ -48,7 +48,7 @@ https://github.com/user-attachments/assets/035eedc0-65da-45d3-8e9c-62b19637d97b
 
 https://github.com/user-attachments/assets/b06b12a8-6507-469d-a76c-543feb72c3fd
 
-Volt is a modular animation system for Unreal Slate Architecture powered by various UObject-based modules that can manipulate slate properties as you want in both runtime and editor, allowing you to declare animations very quickly, intuitively and easily with unique declarative animation syntax.
+Volt is a modular animation system for Unreal Slate Architecture powered by various UObject-based modules that can manipulate slate properties as you want in both runtime and editor, allowing you to declare animations very quickly, intuitively, and easily with unique declarative animation syntax.
 
 Volt lets you make detailed slate animations that are well-structured and lightweight in performance - while keeping development(animating) very intuitive, easy, and fast.
 
@@ -65,7 +65,7 @@ The project's distribution intends to enable you to use it on your editor for th
 
 ### 1. Intuitive Declarative Animation
 
-Volt allows users to animate slates with unique and intuitive animation declaration syntax. This helps you to quickly test out and bulid any animation production with slates.
+Volt allows users to animate slates with unique and intuitive animation declaration syntax. This helps you quickly test out and build any animation production with slates.
 
 https://github.com/user-attachments/assets/3f7a7471-34ed-45c5-913b-9854ed04af41
 
@@ -75,7 +75,7 @@ Animating slates with Volt is **remarkably** easy - You might think it's illegal
 
 You don't need to do any modification to the existing slate types to make it work with Volt - It will work with any slate types as they are.
 
-If you want to animate SBorder instance? Just put that in ```VOLT_PLAY_ANIMATION()``` then it will magically create all the necessary objects internally - You don't need to care about them. **All you have to know is how to declare animations and use each modules to make animations as you want.**
+If you want to animate SBorder instance? Just put that in ```VOLT_PLAY_ANIMATION()``` then it will magically create all the necessary objects internally - You don't need to care about them. **All you have to know is how to declare animations and use each module to make animations as you want.**
 
 ```cpp
 // Make SBorder slate here.
@@ -105,11 +105,11 @@ Considering the main reason why there are not so many plugins or system with ani
 
 Volt has been designed to be fast and lighted-weighted on the performance and memory aspect
 
-It tries to reduce the amount of memory usage, total object counts and iteration counts internally with a ton of performance related optimization logic - including unique garbage collecting logic that works with ownership system, selective variables implementation...
+It tries to reduce the amount of memory usage, total object counts and iteration counts internally with a ton of performance-related optimization logic - including unique garbage-collecting logic that works with the ownership system, selective variables implementation...
 
-Plus, Volt never makes bottleneck on the game thread, because it works with multithreading - many of the intensive actions are all done in a independent thread. This lets users to focus solely on the animation development while not caring too much about the performance issue.
+Plus, Volt never makes bottleneck on the game thread, because it works with multithreading - many of the intensive actions are all done in an independent thread. This lets users focus solely on the animation development while not caring too much about the performance issue.
 
-Also, Many features including querying slate instances or animation tracks are designed to be fast enough ( O(1) ) to supports maximum performance - thus Volt could be practical enough for every project.
+Also, Many features including querying slate instances or animation tracks are designed to be fast enough ( O(1) ) to support maximum performance - thus Volt could be practical enough for every project.
 
 ## :inbox_tray: Installation ##
 
@@ -124,10 +124,10 @@ We assume that you are going to use Volt on your plugin.
 
 * Volt - The module that contains some basic ready-to-use modules and variables for the plugin.
 * VoltCore - The module that contains the fundamental classes for the framework.
-* VoltEditor - The module that contains editor only classes, including **VoltStarship (Showcase + Boilerplate)**
+* VoltEditor - The module that contains editor-only classes, including **VoltStarship (Showcase + Boilerplate)**
 
 > [!NOTE]
-> If you are working on the actual project, we recommend to exclude VoltEditor module in the final bulid.
+> If you are working on the actual project, we recommend excluding the VoltEditor module in the final build.
 
 
 ## :checkered_flag: Quickstart ##
@@ -155,12 +155,12 @@ Now its time to make an actual animation instance. You can use ```VOLT_MAKE_ANIM
 And you can wrap modules with ```( )``` to feed the modules to the animation, then the animation will get those modules and use them to animate the slate.
 
 > [!TIP]
-> ```() operator``` (wraping modules with ```( )```) also works for the modules that can have submodules on providing submodules for them.  
+> ```() operator``` (wrapping modules with ```( )```) also works for the modules that can have submodules on providing submodules for them.  
 > In Volt 1.1, we have 3 object types that take submodules, ```UVoltAnimation```, ```UVolt_ASM_Sequence```, ```UVolt_ASM_Simultaneous```.
 
-In this example, You can see that ```UVoltAnimation``` object will be created with ```UVolt_ASM_Sequence``` inside, that has 2 submodules (```UVolt_ASM_InterpWidgetTransform```) that will animate the slate's render transform as provided.
+In this example, You can see that ```UVoltAnimation``` object will be created with ```UVolt_ASM_Sequence``` inside, which has 2 submodules (```UVolt_ASM_InterpWidgetTransform```) that will animate the slate's render transform as provided.
 
-You can also see that this animation will works like: changing a slate's render transform to make it move and forth (```UVolt_ASM_InterpWidgetTransform```, first one will animate the slate's X location like -50 -> 50, second one will animate it 50 -> -50 )  continuously. (```UVolt_ASM_Sequence```, loop has been enabled by 	.bShouldLoop(true)
+You can also see that this animation will works like this: changing a slate's render transform to make it move and forth (```UVolt_ASM_InterpWidgetTransform```, first one will animate the slate's X location like -50 -> 50, second one will animate it 50 -> -50 )  continuously. (```UVolt_ASM_Sequence```, loop has been enabled by 	.bShouldLoop(true)
 )
 
 ```cpp
@@ -197,17 +197,17 @@ Then you will see something like this.
 
 ### Learning Further...
 
-Volt provides all the other features making & managing slates much organized manner. 
+Volt provides all the other features for making & managing slates in an organized manner. 
 
 > [!IMPORTANT]
-> In this document, we will cover how to use specific macros that are most useful in general usages only. If you need any further help, Please join the official discord!  
+> In this document, we will cover how to use specific macros that are most useful in general usage only. If you need any further help, Please join the official discord!  
 > Or you can find out some release notes to learn about the features - whenever we have anything to explain about them, we leave very detailed explanations for the changes and features.
 
 
 
 #### Storing Animation Track
 
-You can store ```FVoltAnimationTrack``` from ```VOLT_PLAY_ANIM( ... )``` macro that indicate the track of the animation playing in the animation manager. You can use this track to manage (query, check playback state, stop) the playing animation.
+You can store ```FVoltAnimationTrack``` from ```VOLT_PLAY_ANIM( ... )``` macro that indicates the track of the animation playing in the animation manager. You can use this track to manage (query, check playback state, stop) the playing animation.
 
 ```cpp
 FVoltAnimationTrack& Track = VOLT_PLAY_ANIM(AnimationManager, SharedThis(this), Animation);
@@ -216,7 +216,7 @@ FVoltAnimationTrack& Track = VOLT_PLAY_ANIM(AnimationManager, SharedThis(this), 
 
 #### Stopping Animation
 
-You can use ```VOLT_STOP_ANIM( AnimationManagerPtr, AnimationTrack )``` to stop specific animation from specific animation manager with its track.
+You can use ```VOLT_STOP_ANIM( AnimationManagerPtr, AnimationTrack )``` to stop specific animation from a specific animation manager with its track.
 
 ```cpp
 VOLT_STOP_ANIM(AnimationManager, Track );
@@ -225,7 +225,7 @@ VOLT_STOP_ANIM(AnimationManager, Track );
 
 #### Checking Animation State
 
-You can use ```VOLT_CHECK_PLAYING_ANIM( AnimationManagerPtr, AnimationTrack )``` to check whether specific animation is still being played or finished.
+You can use ```VOLT_CHECK_PLAYING_ANIM( AnimationManagerPtr, AnimationTrack )``` to check whether a specific animation is still being played or finished.
 
 ```cpp
 if (VOLT_STOP_ANIM(AnimationManager, Track )) {
@@ -235,17 +235,17 @@ if (VOLT_STOP_ANIM(AnimationManager, Track )) {
 
 #### Finding Volt Interface For Slate
 
-You can find corresponding ```IVoltInterface``` for specific slate with ```VOLT_FIND_OR_ASSIGN_INTERFACE_FOR( SlateWeakPtr )``` macro.
+You can find the corresponding ```IVoltInterface``` for a specific slate with ```VOLT_FIND_OR_ASSIGN_INTERFACE_FOR( SlateWeakPtr )``` macro.
 
-Querying uses hash table internally - guaranteed to provide O(1) time efficiency (at good condition) - you can spam it as you want. Don't be shy!
+Querying uses a hash table internally - guaranteed to provide O(1) time efficiency (at good condition) - you can spam it as you want. Don't be shy!
 
 For native slate types, It will return ```UVoltProxy``` object that wraps the provided slate as a return.
 
 > [!TIP]
-> Volt internally use ```IVoltInterface``` as the unit of the object that can be animated with Volt system, that must provide ```UVoltVariableCollection``` instance that contains all the animated variables that are used to animate the slate, and also the TargetSlate that the interface will animate.  
+> Volt internally uses ```IVoltInterface``` as the unit of the object that can be animated with Volt system, which must provide ```UVoltVariableCollection``` instance that contains all the animated variables that are used to animate the slate, and also the TargetSlate that the interface will animate.  
 > But for most cases, Slates aren't directly inherited from ```IVoltInterface```, so we wrap the slate with a proxy object called ```UVoltProxy``` that inherits ```IVoltInterface``` instead of that slate.  
 > 
-> This is why it returns ```UVoltProxy``` instead, and this is why the system can take any type of slates with no difficulty. It's not a black magic!
+> This is why it returns ```UVoltProxy``` instead, and this is why the system can take any type of slate with no difficulty. It's not a black magic!
 >
 
 
@@ -256,8 +256,8 @@ For native slate types, It will return ```UVoltProxy``` object that wraps the pr
 You can use ```VOLT_RELEASE_MANAGER( AnimationManagerPtrAddress )``` to explicitly release the target ```UVoltAnimationManager``` instance.
 
 > [!NOTE]
-> ```UVoltAnimationManager``` instances will be automatically GC'd by the system after some times even if you don't explicitly release it. You can check out UVoltSubsystem.cpp to learn more about clean up code if you want.  
-> We also wrote clear instruction related to the GC logic in the UVoltSubsystem.h. You can check them out as well.
+> ```UVoltAnimationManager``` instances will be automatically GC'd by the system after some time even if you don't explicitly release it. You can check out UVoltSubsystem.cpp to learn more about clean-up code if you want.  
+> We also wrote clear instructions related to the GC logic in the UVoltSubsystem.h. You can check them out as well.
 
 ```cpp
 VOLT_RELEASE_MANAGER(&AnimationManager);
@@ -265,9 +265,9 @@ VOLT_RELEASE_MANAGER(&AnimationManager);
 
 #### Making New Animation Modules
 
-Sometimes, default provided modules aren't sufficient for you to create your desired production. But you can always make new modules for your need!
+Sometimes, default-provided modules aren't sufficient for you to create your desired production. But you can always make new modules for your needs!
 
-However, this topic will too long for this document. Please visit this [release note](https://gggrain.github.io/Unreal-Joint-Documentation/docs/release_note/Volt/1_1_0) for further details.
+However, this topic will be too long for this document. Please visit this [release note](https://gggrain.github.io/Unreal-Joint-Documentation/docs/release_note/Volt/1_1_0) for further details.
 
 
 ## :camera: Usecases
