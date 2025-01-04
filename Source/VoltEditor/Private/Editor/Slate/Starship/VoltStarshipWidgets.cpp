@@ -288,7 +288,6 @@ void SVoltStarshipButton::EventOnPressed()
 		)
 	);
 
-
 	UVoltAnimation* BorderColorAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)
 	(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -329,10 +328,8 @@ void SVoltStarshipButton::EventOnHovered()
 		.TargetColor(OutlineHoverColor)
 		.RateBasedInterpSpeed(45)
 	);
-
-
+	
 	ColorTrack = VOLT_PLAY_ANIM(AnimationManager, Button, Anim);
-
 	OutlineColorTrack = VOLT_PLAY_ANIM(AnimationManager, Border, BorderColorAnim);
 
 	OnHovered.ExecuteIfBound();
@@ -342,8 +339,7 @@ void SVoltStarshipButton::EventOnUnhovered()
 {
 	VOLT_STOP_ANIM(AnimationManager, ColorTrack);
 	VOLT_STOP_ANIM(AnimationManager, OutlineColorTrack);
-
-
+	
 	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(NormalColor)
@@ -358,7 +354,6 @@ void SVoltStarshipButton::EventOnUnhovered()
 	);
 
 	ColorTrack = VOLT_PLAY_ANIM(AnimationManager, Button, Anim);
-
 	OutlineColorTrack = VOLT_PLAY_ANIM(AnimationManager, Border, BorderColorAnim);
 
 	OnUnhovered.ExecuteIfBound();
