@@ -131,7 +131,7 @@ void FVoltModuleRunnable::ProcessAnimationManagerTrackQueue()
 {
 	for (UVoltAnimationManager* AnimationManager : AnimationManagers)
 	{
-		AnimationManager->ApplyQueuedAnimationTrackRequests();
+		if(AnimationManager && AnimationManager->IsValidLowLevel()) AnimationManager->ApplyQueuedAnimationTrackRequests();
 	}
 }
 
