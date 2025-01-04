@@ -24,7 +24,14 @@ public:
 	
 	UVoltSubsystem();
 
-	~UVoltSubsystem();
+public:
+
+	/** Implement this for initialization of instances of the system */
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+
+	/** Implement this for deinitialization of instances of the system */
+	virtual void Deinitialize() override;
+
 
 public:
 	
@@ -207,7 +214,7 @@ public:
 	 */
 	void RemoveAnimationManagerOnModuleUpdateThread(UVoltAnimationManager* AnimationManager);
 
-	FORCEINLINE const bool IsUtilizingMultithreading() const;
+	const bool IsUtilizingMultithreading() const;
 
 private:
 	

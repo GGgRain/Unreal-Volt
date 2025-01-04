@@ -19,7 +19,7 @@ struct FVoltAnimationTrack
 public:
 	virtual ~FVoltAnimationTrack() = default;
 
-	FVoltAnimationTrack(const FGuid SpecificGuid) : Guid(SpecificGuid) {}
+	FVoltAnimationTrack(const FGuid& SpecificGuid) : Guid(SpecificGuid) {}
 	
 	FVoltAnimationTrack(): Guid(FGuid::NewGuid()) {}
 	

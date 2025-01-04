@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "Widgets/SWidget.h"
 #include "VoltInterface.generated.h"
 
-class SWidget;
 class UVoltVariableCollection;
 
 /**
@@ -49,6 +49,7 @@ public:
 };
 
 
+
 /**
  * Wrapper structure for hashing of the interface.
  * This is introduced for the hash table querying of the Volt Interfaces
@@ -86,3 +87,5 @@ FORCEINLINE bool operator==(const FVoltInterfaceElement& A, const FVoltInterface
 {
 	return A.VoltInterface == B.VoltInterface;
 }
+
+

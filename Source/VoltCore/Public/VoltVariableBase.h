@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Templates/SubclassOf.h"
+#include "VoltVariableActionBase.h"
 #include "VoltVariableBase.generated.h"
 
 /*
@@ -13,7 +15,6 @@
  * And assign the UVoltVariableActionBase to this class on Volt Settings.
  */
 
-class UVoltVariableActionBase;
 class UVoltAnimationManager;
 class SWidget;
 

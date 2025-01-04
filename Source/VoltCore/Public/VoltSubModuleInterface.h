@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "VoltModuleItem.h"
+#include "Templates/SubclassOf.h"
+#include "UObject/Interface.h"
 #include "VoltSubModuleInterface.generated.h"
-
-class UVoltModuleItem;
 
 UINTERFACE(Blueprintable)
 class VOLTCORE_API UVoltSubModuleInterface : public UInterface

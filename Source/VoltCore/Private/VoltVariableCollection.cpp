@@ -10,27 +10,41 @@ UVoltVariableBase* UVoltVariableCollection::FindOrAddVariable(TSubclassOf<UVoltV
 	if(UVoltVariableBase* FoundVariable = FindVariable(Type)) return FoundVariable;
 
 	//Add a new one.
-	return EnqueueVariableOnQueue(NewObject<UVoltVariableBase>(this,Type));;
+
+	UVoltVariableBase* Base = NewObject<UVoltVariableBase>(this,Type);
+
+	EnqueueVariableOnQueue(Base);
+	
+	return Base;
 }
 
 UVoltVariableBase* UVoltVariableCollection::FindVariable(TSubclassOf<UVoltVariableBase> Type)
 {
-
-	UVoltVariableBase** Item = nullptr;
-
-	Item = QueuedVariables.FindByPredicate([Type] (const UVoltVariableBase* CheckVariable = nullptr) {
-		if(CheckVariable == nullptr) return false;
-		return  CheckVariable->GetClass() == Type;
-	});
+	if(!Type || !Type->IsValidLowLevel()) return nullptr;
 	
-	if(Item != nullptr) return *Item;
+	const int QueuedVariablesNum = QueuedVariables.Num();
+	for (int i = QueuedVariablesNum - 1; i >= 0; --i)
+	{
+		UVoltVariableBase* Variable = QueuedVariables[i];
+		
+		if(Variable == nullptr) continue;
+		if(Variable->GetClass() != Type) continue;
 
-	Item = Variables.FindByPredicate([Type] (const UVoltVariableBase* CheckVariable = nullptr) {
-		if(CheckVariable == nullptr) return false;
-		return  CheckVariable->GetClass() == Type;
-	});
+		return Variable;
+	} 
+
+	const int VariablesNum = Variables.Num();
+	for (int i = VariablesNum - 1; i >= 0; --i)
+	{
+		UVoltVariableBase* Variable = Variables[i];
+		
+		if(Variable == nullptr) continue;
+		if(Variable->GetClass() != Type) continue;
+
+		return Variable;
+	} 
 	
-	return (Item != nullptr) ? *Item : nullptr;
+	return nullptr;
 }
 
 const TArray<UVoltVariableBase*>& UVoltVariableCollection::GetVariables()
@@ -40,21 +54,8 @@ const TArray<UVoltVariableBase*>& UVoltVariableCollection::GetVariables()
 
 UVoltVariableBase* UVoltVariableCollection::EnqueueVariableOnQueue(UVoltVariableBase* Variable)
 {
-	if(!Variable || !Variable->IsValidLowLevel()) return nullptr;
-	
-	if(!QueuedVariables.ContainsByPredicate([Variable] (const UVoltVariableBase* CheckVariable) {
-		return CheckVariable->GetClass() == Variable->GetClass();
-	})
-	&&
-	!Variables.ContainsByPredicate([Variable] (const UVoltVariableBase* CheckVariable) {
-		return CheckVariable->GetClass() == Variable->GetClass();
-	}))
-	{
-		QueuedVariables.Add(Variable);
-		return Variable;
-	}
-
-	return nullptr;
+	QueuedVariables.Add(Variable);
+	return Variable;
 }
 
 void UVoltVariableCollection::ProcessQueue()

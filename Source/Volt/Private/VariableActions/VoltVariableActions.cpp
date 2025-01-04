@@ -4,10 +4,13 @@
 #include "VariableActions/VoltVariableActions.h"
 
 #include "Variables/VoltVariables.h"
+
 #include "Widgets/Images/SImage.h"
 #include "Widgets/Layout/SScrollBox.h"
 #include "Widgets/Layout/SWrapBox.h"
-
+#include "Widgets/Layout/SBox.h"
+#include "Widgets/Text/STextBlock.h"
+#include "Widgets/Input/SButton.h"
 
 bool UVoltVarAction_Opacity::CheckSupportWidget(TWeakPtr<SWidget> Slate)
 {
