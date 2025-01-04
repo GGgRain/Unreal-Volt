@@ -113,7 +113,7 @@ void UVoltAnimationManager::ProcessAddAnimationTrack(FVoltAnimationTrack& Track)
 	//Broadcast the event.
 	if (OnAnimationPlayed.IsBound())
 	{
-		OnAnimationPlayed.Broadcast(this, Track, Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
+		OnAnimationPlayed.Broadcast(this, Track, Track.TargetAnimation && Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
 	}
 
 	AnimationTracks.Add(Track);
@@ -122,11 +122,10 @@ void UVoltAnimationManager::ProcessAddAnimationTrack(FVoltAnimationTrack& Track)
 
 void UVoltAnimationManager::ProcessDeleteAnimationTrack(FVoltAnimationTrack& Track)
 {
-
 	//Broadcast the event.
 	if (OnAnimationEnded.IsBound())
 	{
-		OnAnimationEnded.Broadcast(this, Track, Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
+		OnAnimationEnded.Broadcast(this, Track, Track.TargetAnimation && Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
 	}
 	//Broadcast the event.
 	if (OnTrackRemoved.IsBound())
@@ -137,7 +136,6 @@ void UVoltAnimationManager::ProcessDeleteAnimationTrack(FVoltAnimationTrack& Tra
 	//Release its animation.
 	if (Track.TargetAnimation)
 	{
-		Track.TargetAnimation->Modules.Empty();
 		Track.TargetAnimation = nullptr;
 	}
 
