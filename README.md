@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/github/stars/GGgRain/Unreal-Volt?" alt="Badge showing the total of project stars"/>
   </a>
 
-  <a href="https://github.com/GGgRain/Unreal-Volt/blob/master/LICENSE.md" target="_blank">
+  <a href="https://github.com/GGgRain/Unreal-Volt/blob/master/LICENSE" target="_blank">
     <img alt="Badge showing project license type" src="https://img.shields.io/github/license/GGgRain/Unreal-Volt?color=f85149">
   </a>
 
