@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AssetTools/Public/IAssetTools.h"
 #include "Toolkits/AssetEditorToolkit.h"
 #include "Modules/ModuleInterface.h"
 

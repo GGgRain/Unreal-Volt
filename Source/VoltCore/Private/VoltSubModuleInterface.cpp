@@ -57,7 +57,7 @@ bool IVoltSubModuleInterface::HasModule(UVoltModuleItem* InModule)
 		return Container->Contains(InModule);
 	}
 	
-	return false;
+	return nullptr;
 }
 
 bool IVoltSubModuleInterface::HasModuleForClass(TSubclassOf<UVoltModuleItem> InModuleClass)
@@ -67,7 +67,7 @@ bool IVoltSubModuleInterface::HasModuleForClass(TSubclassOf<UVoltModuleItem> InM
 		return Container->ContainsByPredicate([InModuleClass](const UVoltModuleItem* Item) { return Item->GetClass() == InModuleClass; });
 	}
 	
-	return false;
+	return nullptr;
 }
 
 UVoltModuleItem* IVoltSubModuleInterface::GetModuleAt(const int& Index)
