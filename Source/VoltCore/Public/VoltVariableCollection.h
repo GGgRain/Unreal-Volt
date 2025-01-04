@@ -41,6 +41,9 @@ private:
 
 	UVoltVariableBase* EnqueueVariableOnQueue(UVoltVariableBase* Variable);
 
+	/**
+	 * Take QueuedVariables array and patch it to variables array. Please notice this action will be only done when volt update thread is halting, waiting for next update.
+	 */
 	void ProcessQueue();
 
 	friend UVoltAnimationManager;

@@ -252,11 +252,11 @@ void UVoltAnimationManager::Tick(float DeltaTime)
 		if(!AnimationTracks.IsEmpty()) ProcessModuleUpdate(DeltaTime);
 	}
 
-	ApplyVariables();
-
-	// TODO: Provide better way to flush it down, and make sure to this process is not making any bottleneck
+	//These actions must be atomic and done in only one thread.
 	if (!Subsystem->IsModuleUpdateThreadWorking())
 	{
+		ApplyVariables();
+		
 		FlushUnnecessaryTrack();
 	}
 
