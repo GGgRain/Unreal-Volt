@@ -67,11 +67,6 @@ void UVoltSubsystem::TryDiscardAbandonedInstancesByInterval()
 void UVoltSubsystem::UpdateAnimations(float DeltaTime)
 {
 	
-	if(IsUtilizingMultithreading())
-	{
-		ModuleUpdateThread->TriggerTask(DeltaTime);
-	}
-
 	for (UVoltAnimationManager* AnimationManager : RegisteredAnimationManager)
 	{
 		if(AnimationManager == nullptr) continue;
@@ -79,6 +74,11 @@ void UVoltSubsystem::UpdateAnimations(float DeltaTime)
 		AnimationManager->Tick(DeltaTime);
 	}
 
+	if(IsUtilizingMultithreading())
+	{
+		ModuleUpdateThread->TriggerTask(DeltaTime);
+	}
+	
 	//UVolt_ASM_InterpColor* ColorInModule = ObjectInitializer.CreateDefaultSubobject<UVolt_ASM_InterpColor>(this,"ColorInterpIn");
 	//Modules.Add(ColorInModule);
 }

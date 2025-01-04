@@ -21,7 +21,7 @@ UVoltVariableBase* UVoltVariableCollection::FindOrAddVariable(TSubclassOf<UVoltV
 UVoltVariableBase* UVoltVariableCollection::FindVariable(TSubclassOf<UVoltVariableBase> Type)
 {
 	if(!Type || !Type->IsValidLowLevel()) return nullptr;
-	
+
 	const int QueuedVariablesNum = QueuedVariables.Num();
 	for (int i = QueuedVariablesNum - 1; i >= 0; --i)
 	{

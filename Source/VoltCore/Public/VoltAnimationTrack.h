@@ -31,10 +31,10 @@ public:
 public:
 	
 	UPROPERTY(BlueprintReadWrite, Category="Animation Track")
-	TScriptInterface<IVoltInterface> TargetSlateInterface;
+	TScriptInterface<IVoltInterface> TargetSlateInterface = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, Category="Animation Track")
-	TSoftObjectPtr<UVoltAnimation> TargetAnimation;
+	TSoftObjectPtr<UVoltAnimation> TargetAnimation = nullptr;
 
 public:
 
