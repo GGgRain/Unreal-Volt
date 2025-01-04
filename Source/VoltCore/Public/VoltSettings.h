@@ -66,7 +66,11 @@ public:
 public:
 
 	virtual FName GetCategoryName() const override final { return TEXT("Volt"); }
+
+#if WITH_EDITOR
+	
 	virtual FText GetSectionText() const override final { return FText::FromString("Volt Preferences"); }
 
+#endif
 	
 };

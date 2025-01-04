@@ -6,33 +6,30 @@
 #include "VoltModuleRunnable.h"
 #include "VoltProxy.h"
 #include "VoltSettings.h"
+
 #include "Engine/Engine.h"
+#include "Framework/Application/SlateApplication.h"
 
+UVoltSubsystem::UVoltSubsystem() {}
 
-UVoltSubsystem::UVoltSubsystem()
+void UVoltSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	CacheCleanUpInterval();
 	
 	PopulateModuleUpdateThreadIfNeeded();
 
 	//We do not start the tick with it
-	if(this != UVoltSubsystem::StaticClass()->GetDefaultObject())
-	{
-		BindOnSlateApplicationPreTick();
-	}
+	BindOnSlateApplicationPreTick();
 
 	SetUtilizingMultithreading(UVoltSettings::Get() ? UVoltSettings::Get()->bUseMultithreadingOnModuleUpdate : false);
 }
 
-UVoltSubsystem::~UVoltSubsystem()
+void UVoltSubsystem::Deinitialize()
 {
 	ReleaseModuleUpdateThread();
 
 	//We do not start the tick with it
-	if(this != UVoltSubsystem::StaticClass()->GetDefaultObject())
-	{
-		UnbindOnSlateApplicationPreTick();
-	}
+	UnbindOnSlateApplicationPreTick();
 }
 
 void UVoltSubsystem::RegisterAnimationManager(UVoltAnimationManager* AnimationManager)
@@ -115,10 +112,7 @@ void UVoltSubsystem::RemoveAnimationManagerOnModuleUpdateThread(UVoltAnimationMa
 void UVoltSubsystem::PopulateModuleUpdateThreadIfNeeded()
 {
 	ReleaseModuleUpdateThread();
-
-	//We do not create a thread on the CDO.
-	if(this == UVoltSubsystem::StaticClass()->GetDefaultObject()) return;
-
+	
 	//fallback
 	if(!bIsUtilizingMultiThread || ModuleUpdateThread != nullptr) return;
 
@@ -169,7 +163,7 @@ void UVoltSubsystem::AssignVoltInterface(const TScriptInterface<IVoltInterface> 
 {
 	if(HasVoltInterface(VoltInterfaceToAssign)) return;
 
-	VoltInterfaces.Add(VoltInterfaceToAssign->GetTargetSlate().Pin().Get()->GetId(),VoltInterfaceToAssign);
+	VoltInterfaces.Add(GetTypeHash(VoltInterfaceToAssign->GetTargetSlate()),VoltInterfaceToAssign);
 }
 
 TScriptInterface<IVoltInterface> UVoltSubsystem::FindVoltInterfaceFor(const TWeakPtr<SWidget>& SlateToFind)
@@ -177,7 +171,7 @@ TScriptInterface<IVoltInterface> UVoltSubsystem::FindVoltInterfaceFor(const TWea
 
 	if(!SlateToFind.IsValid()) return nullptr;
 	
-	const FVoltInterfaceElement* FoundElem = VoltInterfaces.Find(SlateToFind.Pin()->GetId());
+	const FVoltInterfaceElement* FoundElem = VoltInterfaces.Find(GetTypeHash(SlateToFind));
 	
 	return FoundElem != nullptr ? FoundElem->VoltInterface : nullptr;
 }
@@ -196,19 +190,19 @@ TScriptInterface<IVoltInterface> UVoltSubsystem::FindOrAssignVoltInterfaceFor(co
 
 	FVoltInterfaceElement Elem = FVoltInterfaceElement(Proxy);
 
-	VoltInterfaces.Add(Elem.VoltInterface->GetTargetSlate().Pin()->GetId(), Elem.VoltInterface);
+	VoltInterfaces.Add(GetTypeHash(Elem.VoltInterface->GetTargetSlate()), Elem.VoltInterface);
 	
 	return Proxy;
 }
 
 bool UVoltSubsystem::HasVoltInterface(const TScriptInterface<IVoltInterface>& VoltInterfaceToCheck) const
 {
-	return VoltInterfaces.Contains(VoltInterfaceToCheck->GetTargetSlate().Pin().Get()->GetId());
+	return VoltInterfaces.Contains(GetTypeHash(VoltInterfaceToCheck->GetTargetSlate().Pin()));
 }
 
 bool UVoltSubsystem::HasVoltInterfaceFor(const TWeakPtr<SWidget>& SlateToCheck) const
 {
-	return VoltInterfaces.Contains(SlateToCheck.Pin().Get()->GetId());
+	return VoltInterfaces.Contains(GetTypeHash(SlateToCheck));
 }
 
 int UVoltSubsystem::GetVoltInterfaceCount() const
@@ -248,6 +242,8 @@ void UVoltSubsystem::OnSlateApplicationPreTick(float DeltaTime)
 void UVoltSubsystem::BindOnSlateApplicationPreTick()
 {
 	if(bIsTicking) return;
+
+	if(!FSlateApplication::IsInitialized()) return;
 	
 	if(FSlateApplication* SlateApplication = &FSlateApplication::Get())
 	{
@@ -263,6 +259,8 @@ void UVoltSubsystem::BindOnSlateApplicationPreTick()
 void UVoltSubsystem::UnbindOnSlateApplicationPreTick()
 {
 	if(!bIsTicking) return;
+	
+	if(!FSlateApplication::IsInitialized()) return;
 
 	if(FSlateApplication* SlateApplication = &FSlateApplication::Get())
 	{
