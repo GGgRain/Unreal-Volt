@@ -24,10 +24,9 @@ public class Volt : ModuleRules
 				// ... add other private include paths required here ...
 				
 				"Volt/Public",
-				"Volt/Public/Animation",
 				"Volt/Public/Module",
-				"Volt/Public/Slate",
-				
+				"Volt/Public/VariableActions",
+				"Volt/Public/Variables",
 			}
 			);
 			

@@ -110,13 +110,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Animation")
 	void FlushTrack(const FVoltAnimationTrack& Track);
-
-	/**
-	 * Flush the animation track at the provided index.
-	 * @param Index The index of the track to flush.
-	 */
-	UFUNCTION(BlueprintCallable, Category="Animation")
-	void FlushTrackAt(const int Index);
 	
 	/**
 	 * Flush all the animation tracks for specific volt interface.
@@ -153,7 +146,7 @@ public:
 	 * @return array of the tracks
 	 */
 	UFUNCTION(BlueprintCallable, Category="Animation")
-	const TArray<FVoltAnimationTrack>& GetAnimationTracks();
+	const TSet<FVoltAnimationTrack>& GetAnimationTracks();
 
 public:
 
@@ -167,7 +160,7 @@ private:
 
 	//Animations for the slates.
 	UPROPERTY(VisibleAnywhere, Category="Animated Slates", SkipSerialization, DuplicateTransient, Transient)
-	TArray<FVoltAnimationTrack> AnimationTracks;
+	TSet<FVoltAnimationTrack> AnimationTracks;
 
 private:
 
@@ -176,9 +169,9 @@ private:
 	 * Don't touch it if you don't fully understand the code.
 	 */
 	
-	TArray<FVoltAnimationTrack> AddAnimationTrackQueue;
+	TSet<FVoltAnimationTrack> AddAnimationTrackQueue;
 	
-	TArray<FVoltAnimationTrack> DeleteAnimationTrackQueue;
+	TSet<FVoltAnimationTrack> DeleteAnimationTrackQueue;
 
 	FORCEINLINE void EnqueueOnAddAnimationTrack(const FVoltAnimationTrack& Track);
 

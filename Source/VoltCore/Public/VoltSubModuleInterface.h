@@ -61,7 +61,7 @@ class VOLTCORE_API UVoltSubModuleInterface : public UInterface
 	Those actions allow you to do like this in the declaration:
 	
 	```
-	UVoltAnimation* ColorAnimation = VOLT_MAKE_ANIMATION(UVoltAnimation)
+	UVoltAnimation* ColorAnimation = VOLT_MAKE_ANIMATION()
 		(
 			VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 			.bShouldLoop(true)

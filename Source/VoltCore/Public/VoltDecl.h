@@ -32,6 +32,85 @@ FORCEINLINE void VOLTCORE_API VOLT_ASSIGN_INTERFACE(
 }
 
 
+
+
+
+//Shared Animation Manager Related
+
+FORCEINLINE const FVoltAnimationTrack VOLTCORE_API VOLT_PLAY_ANIM(
+	const TWeakPtr<SWidget>& Slate,
+	const UVoltAnimation* Animation)
+{
+	if (Slate == nullptr) return FVoltAnimationTrack::NullTrack;
+	if (Animation == nullptr) return FVoltAnimationTrack::NullTrack;
+
+
+	if(UVoltAnimationManager* AnimationManager = UVoltSubsystem::GetSharedAnimationManager()) return AnimationManager->PlayAnimationFor(VOLT_FIND_OR_ASSIGN_INTERFACE_FOR(Slate), Animation);
+	
+	return FVoltAnimationTrack::NullTrack;
+
+}
+
+
+FORCEINLINE const FVoltAnimationTrack VOLTCORE_API VOLT_PLAY_ANIM(
+	TScriptInterface<IVoltInterface> SlateInterface,
+	const UVoltAnimation* Animation)
+{
+	if (SlateInterface == nullptr) return FVoltAnimationTrack::NullTrack;
+	if (Animation == nullptr) return FVoltAnimationTrack::NullTrack;
+	
+	if(UVoltAnimationManager* AnimationManager = UVoltSubsystem::GetSharedAnimationManager()) return AnimationManager->PlayAnimationFor(SlateInterface, Animation);
+
+	return FVoltAnimationTrack::NullTrack;
+}
+
+
+FORCEINLINE void VOLTCORE_API VOLT_STOP_ANIM(
+	const FVoltAnimationTrack& Track)
+{
+	if(UVoltAnimationManager* AnimationManager = UVoltSubsystem::GetSharedAnimationManager())
+	{
+		if(AnimationManager->HasTrack(Track)) AnimationManager->FlushTrack(Track);
+	}
+}
+
+FORCEINLINE bool VOLTCORE_API VOLT_CHECK_PLAYING_ANIM(
+	const FVoltAnimationTrack& Track)
+{
+	if(UVoltAnimationManager* AnimationManager = UVoltSubsystem::GetSharedAnimationManager()) AnimationManager->HasTrack(Track);
+
+	return false;
+}
+
+
+FORCEINLINE void VOLTCORE_API VOLT_STOP_ALL_ANIM(
+	TScriptInterface<IVoltInterface> SlateInterface)
+{
+	if (SlateInterface == nullptr) return;
+
+	if(UVoltAnimationManager* AnimationManager = UVoltSubsystem::GetSharedAnimationManager()) AnimationManager->FlushTracksFor(SlateInterface);
+
+}
+
+FORCEINLINE void VOLTCORE_API VOLT_STOP_ALL_ANIM(
+	const TWeakPtr<SWidget>& Slate)
+{
+	if (Slate == nullptr) return;
+	
+	if(UVoltAnimationManager* AnimationManager = UVoltSubsystem::GetSharedAnimationManager()) AnimationManager->FlushTracksFor(VOLT_FIND_OR_ASSIGN_INTERFACE_FOR(Slate));
+
+}
+
+
+
+
+
+
+
+
+
+//With Specific Animation Manager
+
 FORCEINLINE const FVoltAnimationTrack VOLTCORE_API VOLT_PLAY_ANIM(
 	UVoltAnimationManager* Manager,
 	const TWeakPtr<SWidget>& Slate,
@@ -72,7 +151,8 @@ FORCEINLINE void VOLTCORE_API VOLT_STOP_ANIM(
 	if (!IsValid(Manager)) return;
 	if (!Manager->IsValidLowLevel()) return;
 
-	Manager->FlushTrack(Track);
+	if(Manager->HasTrack(Track)) Manager->FlushTrack(Track);
+	
 }
 
 FORCEINLINE bool VOLTCORE_API VOLT_CHECK_PLAYING_ANIM(
@@ -329,11 +409,20 @@ struct TVoltAnimationDecl
 	
 };
 
-#define VOLT_MAKE_ANIMATION( AnimationType, ... ) \
+
+/**
+ * Declare a new animation from specified animation class type.
+ */
+#define VOLT_MAKE_ANIMATION_WITH_TYPE( AnimationType ) \
 	TVoltAnimationDecl<AnimationType>()
 
-
-
+/**
+ * Declare a new animation.
+ * 
+ * Volt 1.2: if you want to start to make animation with specific UVoltAnimation class, Use VOLT_MAKE_ANIMATION_WITH_TYPE instead.
+ */
+#define VOLT_MAKE_ANIMATION( ... ) \
+	TVoltAnimationDecl<UVoltAnimation>()
 
 
 //Module Related

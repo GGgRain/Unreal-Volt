@@ -25,7 +25,6 @@
 
 void SVoltInterpModuleBackground::Construct(const FArguments& InArgs)
 {
-	AnimationManager = InArgs._AnimationManager;
 
 	Animation = InArgs._AnimationToPlay;
 
@@ -41,7 +40,6 @@ void SVoltInterpModuleBackground::Construct(const FArguments& InArgs)
 		+ SOverlay::Slot()
 		[
 			SNew(SVoltStarshipBorder)
-			.AnimationManager(AnimationManager)
 			.ContentMargin(FMargin(10))
 			.OutlineMargin(FMargin(1))
 			.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
@@ -73,13 +71,12 @@ void SVoltInterpModuleBackground::Construct(const FArguments& InArgs)
 	];
 
 	//Get AsShared() to wait until it settle down.
-	VOLT_PLAY_ANIM(AnimationManager, AnimBlock->AsShared(), Animation);
+	VOLT_PLAY_ANIM(AnimBlock->AsShared(), Animation);
 }
 
 
 void SVoltStarshipBorder::Construct(const FArguments& InArgs)
 {
-	AnimationManager = InArgs._AnimationManager;
 
 	Content = InArgs._Content.Widget;
 
@@ -122,82 +119,82 @@ void SVoltStarshipBorder::Construct(const FArguments& InArgs)
 
 void SVoltStarshipBorder::OnMouseEnter(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
-	VOLT_STOP_ALL_ANIM(AnimationManager, InnerBorder->AsShared());
+	VOLT_STOP_ALL_ANIM(InnerBorder->AsShared());
 
-	VOLT_STOP_ALL_ANIM(AnimationManager, OuterBorder->AsShared());
+	VOLT_STOP_ALL_ANIM(OuterBorder->AsShared());
 
-	UVoltAnimation* ContentAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* ContentAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(HoverColor)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* OutlineAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* OutlineAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(OutlineHoverColor)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* OutlineTransformAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* OutlineTransformAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpWidgetTransform)
 		.TargetWidgetTransform(HoverTransform)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* OpacityAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* OpacityAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpRenderOpacity)
 		.TargetOpacity(HoverOpacity)
 		.RateBasedInterpSpeed(20)
 	);
 
-	VOLT_PLAY_ANIM(AnimationManager, InnerBorder->AsShared(), ContentAnim);
+	VOLT_PLAY_ANIM(InnerBorder->AsShared(), ContentAnim);
 
-	VOLT_PLAY_ANIM(AnimationManager, OuterBorder->AsShared(), OutlineAnim);
+	VOLT_PLAY_ANIM(OuterBorder->AsShared(), OutlineAnim);
 
-	VOLT_PLAY_ANIM(AnimationManager, OuterBorder->AsShared(), OutlineTransformAnim);
+	VOLT_PLAY_ANIM(OuterBorder->AsShared(), OutlineTransformAnim);
 
-	VOLT_PLAY_ANIM(AnimationManager, OuterBorder->AsShared(), OpacityAnim);
+	VOLT_PLAY_ANIM(OuterBorder->AsShared(), OpacityAnim);
 
 	SCompoundWidget::OnMouseEnter(MyGeometry, MouseEvent);
 }
 
 void SVoltStarshipBorder::OnMouseLeave(const FPointerEvent& MouseEvent)
 {
-	VOLT_STOP_ALL_ANIM(AnimationManager, InnerBorder->AsShared());
+	VOLT_STOP_ALL_ANIM(InnerBorder->AsShared());
 
-	VOLT_STOP_ALL_ANIM(AnimationManager, OuterBorder->AsShared());
+	VOLT_STOP_ALL_ANIM(OuterBorder->AsShared());
 
-	UVoltAnimation* ContentAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* ContentAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(NormalColor)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* OutlineAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* OutlineAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(OutlineNormalColor)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* OutlineTransformAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* OutlineTransformAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpWidgetTransform)
 		.TargetWidgetTransform(NormalTransform)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* OpacityAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* OpacityAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpRenderOpacity)
 		.TargetOpacity(NormalOpacity)
 		.RateBasedInterpSpeed(20)
 	);
 
-	VOLT_PLAY_ANIM(AnimationManager, InnerBorder->AsShared(), ContentAnim);
+	VOLT_PLAY_ANIM(InnerBorder->AsShared(), ContentAnim);
 
-	VOLT_PLAY_ANIM(AnimationManager, OuterBorder->AsShared(), OutlineAnim);
+	VOLT_PLAY_ANIM(OuterBorder->AsShared(), OutlineAnim);
 
-	VOLT_PLAY_ANIM(AnimationManager, OuterBorder->AsShared(), OutlineTransformAnim);
+	VOLT_PLAY_ANIM(OuterBorder->AsShared(), OutlineTransformAnim);
 
-	VOLT_PLAY_ANIM(AnimationManager, OuterBorder->AsShared(), OpacityAnim);
+	VOLT_PLAY_ANIM(OuterBorder->AsShared(), OpacityAnim);
 
 	SCompoundWidget::OnMouseLeave(MouseEvent);
 }
@@ -206,9 +203,7 @@ void SVoltStarshipBorder::OnMouseLeave(const FPointerEvent& MouseEvent)
 void SVoltStarshipButton::Construct(const FArguments& InArgs)
 {
 	Content = InArgs._Content.Widget;
-
-	AnimationManager = InArgs._AnimationManager;
-
+	
 	NormalColor = InArgs._NormalColor;
 	HoverColor = InArgs._HoverColor;
 	PressColor = InArgs._PressColor;
@@ -254,11 +249,11 @@ void SVoltStarshipButton::Construct(const FArguments& InArgs)
 
 void SVoltStarshipButton::EventOnPressed()
 {
-	VOLT_STOP_ANIM(AnimationManager, TransformTrack);
-	VOLT_STOP_ANIM(AnimationManager, ColorTrack);
-	VOLT_STOP_ANIM(AnimationManager, OutlineColorTrack);
+	VOLT_STOP_ANIM(TransformTrack);
+	VOLT_STOP_ANIM(ColorTrack);
+	VOLT_STOP_ANIM(OutlineColorTrack);
 
-	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)
+	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION()
 	(
 		VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 		.TargetWidgetTransformPivot(FVector2D(0.5, 0.5)),
@@ -274,7 +269,7 @@ void SVoltStarshipButton::EventOnPressed()
 		)
 	);
 
-	UVoltAnimation* ColorAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)
+	UVoltAnimation* ColorAnim = VOLT_MAKE_ANIMATION()
 	(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 		.bShouldLoop(false)
@@ -288,7 +283,7 @@ void SVoltStarshipButton::EventOnPressed()
 		)
 	);
 
-	UVoltAnimation* BorderColorAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)
+	UVoltAnimation* BorderColorAnim = VOLT_MAKE_ANIMATION()
 	(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 		.bShouldLoop(false)
@@ -302,59 +297,59 @@ void SVoltStarshipButton::EventOnPressed()
 		)
 	);
 
-	TransformTrack = VOLT_PLAY_ANIM(AnimationManager, Button, Anim);
+	TransformTrack = VOLT_PLAY_ANIM(Button, Anim);
 
-	ColorTrack = VOLT_PLAY_ANIM(AnimationManager, Button, ColorAnim);
+	ColorTrack = VOLT_PLAY_ANIM(Button, ColorAnim);
 
-	OutlineColorTrack = VOLT_PLAY_ANIM(AnimationManager, Border, BorderColorAnim);
+	OutlineColorTrack = VOLT_PLAY_ANIM(Border, BorderColorAnim);
 
 	OnPressed.ExecuteIfBound();
 }
 
 void SVoltStarshipButton::EventOnHovered()
 {
-	VOLT_STOP_ANIM(AnimationManager, ColorTrack);
-	VOLT_STOP_ANIM(AnimationManager, OutlineColorTrack);
+	VOLT_STOP_ANIM(ColorTrack);
+	VOLT_STOP_ANIM(OutlineColorTrack);
 
-	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(HoverColor)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* BorderColorAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)
+	UVoltAnimation* BorderColorAnim = VOLT_MAKE_ANIMATION()
 	(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(OutlineHoverColor)
 		.RateBasedInterpSpeed(45)
 	);
 	
-	ColorTrack = VOLT_PLAY_ANIM(AnimationManager, Button, Anim);
-	OutlineColorTrack = VOLT_PLAY_ANIM(AnimationManager, Border, BorderColorAnim);
+	ColorTrack = VOLT_PLAY_ANIM(Button, Anim);
+	OutlineColorTrack = VOLT_PLAY_ANIM(Border, BorderColorAnim);
 
 	OnHovered.ExecuteIfBound();
 }
 
 void SVoltStarshipButton::EventOnUnhovered()
 {
-	VOLT_STOP_ANIM(AnimationManager, ColorTrack);
-	VOLT_STOP_ANIM(AnimationManager, OutlineColorTrack);
+	VOLT_STOP_ANIM(ColorTrack);
+	VOLT_STOP_ANIM(OutlineColorTrack);
 	
-	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(NormalColor)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* BorderColorAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)
+	UVoltAnimation* BorderColorAnim = VOLT_MAKE_ANIMATION()
 	(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(OutlineNormalColor)
 		.RateBasedInterpSpeed(45)
 	);
 
-	ColorTrack = VOLT_PLAY_ANIM(AnimationManager, Button, Anim);
-	OutlineColorTrack = VOLT_PLAY_ANIM(AnimationManager, Border, BorderColorAnim);
+	ColorTrack = VOLT_PLAY_ANIM(Button, Anim);
+	OutlineColorTrack = VOLT_PLAY_ANIM(Border, BorderColorAnim);
 
 	OnUnhovered.ExecuteIfBound();
 }
@@ -362,8 +357,6 @@ void SVoltStarshipButton::EventOnUnhovered()
 
 void SVoltStarshipToggleButton::Construct(const FArguments& InArgs)
 {
-	AnimationManager = InArgs._AnimationManager;
-
 	OnColor = InArgs._OnColor;
 	OffColor = InArgs._OffColor;
 
@@ -394,25 +387,26 @@ void SVoltStarshipToggleButton::Construct(const FArguments& InArgs)
 
 void SVoltStarshipToggleButton::PlayToggleAnimation(const bool& bToggled, const bool& bInstant = false)
 {
-	VOLT_STOP_ALL_ANIM(AnimationManager, Button->AsShared());
-	VOLT_STOP_ALL_ANIM(AnimationManager, Toggle->AsShared());
+	VOLT_STOP_ALL_ANIM(Button->AsShared());
+	VOLT_STOP_ALL_ANIM(Toggle->AsShared());
 
-	UVoltAnimation* Color = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* Color = VOLT_MAKE_ANIMATION()
+	(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 		.TargetColor(bToggled ? OnColor : OffColor)
 		.RateBasedInterpSpeed(20)
 	);
 
-	UVoltAnimation* Transform = VOLT_MAKE_ANIMATION(UVoltAnimation)
+	UVoltAnimation* Transform = VOLT_MAKE_ANIMATION()
 	(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpWidgetTransform)
 		.TargetWidgetTransform(FWidgetTransform(FVector2D(bToggled ? ButtonLength * 0.66 : ButtonLength * -0.66, 0),
 		                                        FVector2D(1, 1), FVector2D(0, 0), 0))
-		.RateBasedInterpSpeed(45)
+		.RateBasedInterpSpeed(15)
 	);
 
-	VOLT_PLAY_ANIM(AnimationManager, Button, Color);
-	VOLT_PLAY_ANIM(AnimationManager, Toggle, Transform);
+	VOLT_PLAY_ANIM(Button, Color);
+	VOLT_PLAY_ANIM(Toggle, Transform);
 }
 
 void SVoltStarshipToggleButton::EventOnPressed()
@@ -460,7 +454,7 @@ void SVoltStarshipScrollElement::PlayAnimation(const double& Interval)
 	VOLT_STOP_ALL_ANIM(AnimationManager, Border->AsShared());
 
 
-	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* Anim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 		.bShouldLoop(false)
 		(
@@ -493,7 +487,6 @@ void SVoltStarshipScrollElement::PlayAnimation(const double& Interval)
 
 void SVoltStarshipExpandingBorder::Construct(const FArguments& InArgs)
 {
-	AnimationManager = InArgs._AnimationManager;
 	DelayDuration = InArgs._DelayDuration;
 
 	Content = InArgs._Content.Widget;
@@ -521,12 +514,12 @@ void SVoltStarshipExpandingBorder::Tick(const FGeometry& AllottedGeometry, const
 
 void SVoltStarshipExpandingBorder::PlayAnimation()
 {
-	VOLT_STOP_ALL_ANIM(AnimationManager, Box->AsShared());
-	VOLT_STOP_ALL_ANIM(AnimationManager, Content->AsShared());
+	VOLT_STOP_ALL_ANIM(Box->AsShared());
+	VOLT_STOP_ALL_ANIM(Content->AsShared());
 
 	const FVector2D& Size = Content.ToSharedRef()->GetDesiredSize();
 
-	UVoltAnimation* BoxAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* BoxAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 		(
 			VOLT_MAKE_MODULE(UVolt_ASM_InterpBoxProperties)
@@ -554,7 +547,7 @@ void SVoltStarshipExpandingBorder::PlayAnimation()
 		)
 	);
 
-	UVoltAnimation* ContentAnim = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* ContentAnim = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 		(
 			VOLT_MAKE_MODULE(UVolt_ASM_InterpRenderOpacity)
@@ -572,8 +565,8 @@ void SVoltStarshipExpandingBorder::PlayAnimation()
 		)
 	);
 
-	VOLT_PLAY_ANIM(AnimationManager, Box->AsShared(), BoxAnim);
-	VOLT_PLAY_ANIM(AnimationManager, Content->AsShared(), ContentAnim);
+	VOLT_PLAY_ANIM(Box->AsShared(), BoxAnim);
+	VOLT_PLAY_ANIM(Content->AsShared(), ContentAnim);
 
 	bEverPlayedAnimation = true;
 }
@@ -581,9 +574,7 @@ void SVoltStarshipExpandingBorder::PlayAnimation()
 void SVoltStarshipDescriptionCard::Construct(const FArguments& InArgs)
 {
 	Content = InArgs._Content.Widget;
-
-	AnimationManager = InArgs._AnimationManager;
-
+	
 	ChildSlot[
 		SAssignNew(Border, SBorder)
 		.RenderTransformPivot(FVector2D(0.5, 0.5))
@@ -677,9 +668,9 @@ void SVoltStarshipDescriptionCard::Construct(const FArguments& InArgs)
 
 void SVoltStarshipDescriptionCard::PlayInitAnimation()
 {
-	VOLT_STOP_ALL_ANIM(AnimationManager, DescriptionBorder->AsShared());
+	VOLT_STOP_ALL_ANIM(DescriptionBorder->AsShared());
 
-	UVoltAnimation* Anim1 = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* Anim1 = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_InterpRenderOpacity)
 		.InterpolationMode(EVoltInterpMode::AlphaBased)
 		.AlphaBasedEasingFunction(EEasingFunc::CircularOut)
@@ -696,7 +687,7 @@ void SVoltStarshipDescriptionCard::PlayInitAnimation()
 		.TargetWidgetTransform(FWidgetTransform(FVector2D(0, 0), FVector2D(1, 1.), FVector2D(0, 0), 0))
 	);
 
-	UVoltAnimation* Anim2 = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* Anim2 = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 		.bShouldLoop(false)
 		(
@@ -715,7 +706,7 @@ void SVoltStarshipDescriptionCard::PlayInitAnimation()
 		)
 	);
 
-	UVoltAnimation* Anim3 = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* Anim3 = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 		.bShouldLoop(false)
 		(
@@ -734,7 +725,7 @@ void SVoltStarshipDescriptionCard::PlayInitAnimation()
 		)
 	);
 
-	UVoltAnimation* Anim4 = VOLT_MAKE_ANIMATION(UVoltAnimation)(
+	UVoltAnimation* Anim4 = VOLT_MAKE_ANIMATION()(
 		VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 		.bShouldLoop(false)
 		(
@@ -753,13 +744,13 @@ void SVoltStarshipDescriptionCard::PlayInitAnimation()
 		)
 	);
 
-	VOLT_PLAY_ANIM(AnimationManager, Border->AsShared(), Anim1);
+	VOLT_PLAY_ANIM(Border->AsShared(), Anim1);
 
-	VOLT_PLAY_ANIM(AnimationManager, DescriptionBorder->AsShared(), Anim2);
+	VOLT_PLAY_ANIM(DescriptionBorder->AsShared(), Anim2);
 
-	VOLT_PLAY_ANIM(AnimationManager, TitleTextBlock->AsShared(), Anim3);
+	VOLT_PLAY_ANIM(TitleTextBlock->AsShared(), Anim3);
 
-	VOLT_PLAY_ANIM(AnimationManager, DescriptionTextBlock->AsShared(), Anim4);
+	VOLT_PLAY_ANIM(DescriptionTextBlock->AsShared(), Anim4);
 }
 
 

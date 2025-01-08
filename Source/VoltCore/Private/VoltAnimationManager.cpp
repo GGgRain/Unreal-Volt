@@ -145,38 +145,26 @@ void UVoltAnimationManager::ProcessDeleteAnimationTrack(FVoltAnimationTrack& Tra
 
 void UVoltAnimationManager::FlushUnnecessaryTrack()
 {
-	const int num = AnimationTracks.Num();
+	for (const FVoltAnimationTrack& AnimationTrack : AnimationTracks) {
 
-	//Iterate the array backward.
-	for (int index = num - 1; index >= 0; --index)
-	{
-		const FVoltAnimationTrack& TrackRef = AnimationTracks[index];
-
-		if (!TrackRef.TargetAnimation)
+		if (!AnimationTrack.TargetAnimation)
 		{
-			FlushTrackAt(index);
+			FlushTrack(AnimationTrack);
 			continue;
 		}
 
-		if (!TrackRef.TargetAnimation->IsActive())
+		if (!AnimationTrack.TargetAnimation->IsActive())
 		{
-			FlushTrackAt(index);
+			FlushTrack(AnimationTrack);
 		}
+		
 	}
 }
 
 
 bool UVoltAnimationManager::HasTrack(const FVoltAnimationTrack& Track)
 {
-	const int FoundIndex = AnimationTracks.Find(Track);
-
-	//Revert if it was unable to find the index of the target.
-	if (FoundIndex == INDEX_NONE)
-	{
-		return false;
-	}
-
-	return true;
+	return AnimationTracks.Contains(Track);
 }
 
 void UVoltAnimationManager::FlushTrack(const FVoltAnimationTrack& Track)
@@ -188,31 +176,15 @@ void UVoltAnimationManager::FlushTrack(const FVoltAnimationTrack& Track)
 	EnqueueOnDeleteAnimationTrack(Track);
 }
 
-void UVoltAnimationManager::FlushTrackAt(const int Index)
-{
-	if (!AnimationTracks.IsValidIndex(Index))
-	{
-		return;
-	}
-
-	//Get the reference of the track from the array and use it instead of the provided track to avoid corruption.
-	FVoltAnimationTrack& TrackRefToRemove = AnimationTracks[Index];
-
-	FlushTrack(TrackRefToRemove);
-}
-
 void UVoltAnimationManager::FlushTracksFor(TScriptInterface<IVoltInterface> TargetVoltInterface)
 {
 	const int num = AnimationTracks.Num();
 
-	//Iterate the array backward.
-	for (int index = num - 1; index >= 0; --index)
-	{
-		if(!AnimationTracks.IsValidIndex(index)) continue;
-
-		if (FVoltAnimationTrack& Track = AnimationTracks[index]; Track.TargetSlateInterface.GetInterface() == TargetVoltInterface.GetInterface())
+	for (const FVoltAnimationTrack& AnimationTrack : AnimationTracks) {
+		
+		if (AnimationTrack.TargetSlateInterface.GetInterface() == TargetVoltInterface.GetInterface())
 		{
-			FlushTrack(AnimationTracks[index]);
+			FlushTrack(AnimationTrack);
 		}
 	}
 }
@@ -222,13 +194,12 @@ void UVoltAnimationManager::FlushAllTracks()
 {
 	const int num = AnimationTracks.Num();
 
-	for (int index = num - 1; index >= 0; --index)
-	{
-		FlushTrackAt(index);
+	for (const FVoltAnimationTrack& AnimationTrack : AnimationTracks) {
+		FlushTrack(AnimationTrack);
 	}
 }
 
-const TArray<FVoltAnimationTrack>& UVoltAnimationManager::GetAnimationTracks()
+const TSet<FVoltAnimationTrack>& UVoltAnimationManager::GetAnimationTracks()
 {
 	return AnimationTracks;
 }
@@ -267,6 +238,8 @@ void UVoltAnimationManager::ApplyVariables()
 {
 	for (FVoltAnimationTrack& AnimationTrack : AnimationTracks)
 	{
+		if(!AnimationTrack.TargetSlateInterface) continue;
+			
 		if (UVoltVariableCollection* Collection = AnimationTrack.TargetSlateInterface->GetVoltVariableCollection())
 		{
 			//Process all the queued variable to the actual list.
@@ -275,8 +248,6 @@ void UVoltAnimationManager::ApplyVariables()
 			const TArray<UVoltVariableBase*>& Variables = Collection->GetVariables();
 				
 			const int IterNum = Variables.Num();
-
-			if(!AnimationTrack.TargetSlateInterface) continue;
 			
 			TWeakPtr<SWidget> Slate = AnimationTrack.TargetSlateInterface->GetTargetSlate();
 

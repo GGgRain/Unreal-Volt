@@ -12,7 +12,7 @@ class UVoltAnimation;
 class UVoltModuleItem;
 
 /**
- * The animation asset class for the slates. It only contains data.
+ * The animation class for the slates in Volt.
  */
 UCLASS()
 class VOLTCORE_API UVoltAnimation : public UObject, public IVoltSubModuleInterface

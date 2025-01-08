@@ -13,12 +13,9 @@ class VOLTEDITOR_API SVoltInterpModuleBackground : public SCompoundWidget
 	
 public:
 
-	SLATE_BEGIN_ARGS(SVoltInterpModuleBackground) :
-		_AnimationManager(nullptr)
-		{}
+	SLATE_BEGIN_ARGS(SVoltInterpModuleBackground) {}
 	SLATE_DEFAULT_SLOT(FArguments, Content)
 	SLATE_ARGUMENT(FText, Title)
-	SLATE_ARGUMENT(UVoltAnimationManager*, AnimationManager)
 	SLATE_ARGUMENT(UVoltAnimation*, AnimationToPlay)
 	SLATE_END_ARGS();
 	
@@ -29,10 +26,7 @@ public:
 	TSharedPtr<SBorder> AnimBlock;
 
 	FText Title;
-
-public:
-
-	UVoltAnimationManager* AnimationManager = nullptr;
+	
 
 	UVoltAnimation* Animation = nullptr;
 	
@@ -46,7 +40,6 @@ class VOLTEDITOR_API SVoltStarshipBorder : public SCompoundWidget
 public:
 
 	SLATE_BEGIN_ARGS(SVoltStarshipBorder) :
-		_AnimationManager(nullptr),
 		_NormalOpacity(1),
 		_HoverOpacity(1),
 		_NormalColor(FLinearColor(0.01,0.01,0.01)),
@@ -63,8 +56,7 @@ public:
 		SLATE_ARGUMENT( EVerticalAlignment, VAlign )
 		
 		SLATE_DEFAULT_SLOT(FArguments, Content)
-		SLATE_ARGUMENT(UVoltAnimationManager*, AnimationManager)
-			
+		
 		SLATE_ATTRIBUTE( const FSlateBrush*, OuterBorderImage )
 		SLATE_ATTRIBUTE( const FSlateBrush*, InnerBorderImage )
 		
@@ -109,10 +101,6 @@ public:
 	
 	TSharedPtr<SWidget> InnerBorder;
 
-
-public:
-
-	UVoltAnimationManager* AnimationManager = nullptr;
 	
 public:
 
@@ -131,7 +119,6 @@ class VOLTEDITOR_API SVoltStarshipButton : public SCompoundWidget
 public:
 
 	SLATE_BEGIN_ARGS(SVoltStarshipButton) :
-		_AnimationManager(nullptr),
 		_ButtonStyle( &FCoreStyle::Get().GetWidgetStyle< FButtonStyle >( "Button" ) ),
 		_NormalColor(FLinearColor(0.02,0.02,0.02)),
 		_HoverColor(FLinearColor(0.04,0.04,0.08)),
@@ -149,8 +136,6 @@ public:
 		SLATE_ARGUMENT( EHorizontalAlignment, HAlign )
 		SLATE_ARGUMENT( EVerticalAlignment, VAlign )
 		
-		SLATE_ARGUMENT(UVoltAnimationManager*, AnimationManager)
-
 		SLATE_ATTRIBUTE( const FSlateBrush*, OutlineBorderImage )
 		SLATE_STYLE_ARGUMENT(FButtonStyle, ButtonStyle)
 		
@@ -211,11 +196,7 @@ public:
 
 	/** The delegate to execute when the button exit the hovered state */
 	FSimpleDelegate OnUnhovered;
-
-public:
 	
-	UVoltAnimationManager* AnimationManager = nullptr;
-
 public:
 
 	FVoltAnimationTrack OutlineColorTrack;
@@ -238,7 +219,6 @@ class VOLTEDITOR_API SVoltStarshipToggleButton : public SCompoundWidget
 public:
 	
 	SLATE_BEGIN_ARGS(SVoltStarshipToggleButton) :
-		_AnimationManager(nullptr),
 		_ButtonStyle( &FCoreStyle::Get().GetWidgetStyle< FButtonStyle >( "Button" )),
 		_OnColor(FLinearColor(0.1,0.4,0.2)),
 		_OffColor(FLinearColor(0.05,0.05,0.05)),
@@ -262,10 +242,6 @@ public:
 public:
 	
 	void Construct(const FArguments& InArgs);
-
-public:
-
-	UVoltAnimationManager* AnimationManager;
 
 public:
 
@@ -336,6 +312,10 @@ public:
 
 public:
 	
+	/**
+	 * We use one common, independent animation manager for the elements. 
+	 */
+	
 	UVoltAnimationManager* AnimationManager = nullptr;
 
 public:
@@ -356,9 +336,7 @@ class VOLTEDITOR_API SVoltStarshipExpandingBorder : public SCompoundWidget
 	
 public:
 
-	SLATE_BEGIN_ARGS(SVoltStarshipExpandingBorder) :
-		_AnimationManager(nullptr)
-	{}
+	SLATE_BEGIN_ARGS(SVoltStarshipExpandingBorder) {}
 	SLATE_DEFAULT_SLOT(FArguments, Content)
 	SLATE_ARGUMENT(UVoltAnimationManager*, AnimationManager)
 	SLATE_ARGUMENT(float, DelayDuration)
@@ -372,10 +350,6 @@ public:
 	TSharedPtr<SBox> Box;
 
 	TSharedPtr<SWidget> Content;
-
-public:
-	
-	UVoltAnimationManager* AnimationManager = nullptr;
 
 public:
 
@@ -410,7 +384,6 @@ class VOLTEDITOR_API SVoltStarshipDescriptionCard : public SCompoundWidget
 public:
 
 	SLATE_BEGIN_ARGS(SVoltStarshipDescriptionCard) :
-		_AnimationManager(nullptr),
 		_Size(FVector2D(800,600)),
 		_ExplanationSectionColor(FLinearColor(0.5,0.6,0.8)),
 		_ExplanationBackgroundColor(FLinearColor(0.01,0.01,0.01))
@@ -443,10 +416,6 @@ public:
 	TSharedPtr<STextBlock> DescriptionTextBlock;
 
 	TSharedPtr<SWidget> Content;
-
-public:
-	
-	UVoltAnimationManager* AnimationManager = nullptr;
 
 public:
 

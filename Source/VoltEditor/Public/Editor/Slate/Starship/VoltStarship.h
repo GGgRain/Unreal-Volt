@@ -46,11 +46,7 @@ public:
 	TSharedRef<SWidget> CreateInterpSection_Rate();
 
 	TSharedRef<SWidget> CreateInterpSection_Alpha();
-
-
-public:
-
-	UVoltAnimationManager* AnimationManager = nullptr;
+	
 	
 };
 

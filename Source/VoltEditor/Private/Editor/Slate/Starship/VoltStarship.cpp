@@ -177,15 +177,13 @@ TSharedRef<SWidget> SVoltStarship::MakeToolbar()
 	ToolbarBuilder.BeginSection("Main");
 
 	ToolbarBuilder.EndSection();
-	
+
 	return ToolbarBuilder.MakeWidget();
 }
 
 
 void SVoltModuleStarshipTab::Construct(const FArguments& InArgs)
 {
-	VOLT_IMPLEMENT_MANAGER(&AnimationManager, SharedThis(this));
-
 	ChildSlot
 		.VAlign(VAlign_Fill)
 		.HAlign(HAlign_Fill)
@@ -237,9 +235,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Rate()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("RateBased : Constant"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)
+				VOLT_MAKE_ANIMATION()
 				(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
@@ -266,9 +263,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Rate()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("RateBased : Linear"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)
+				VOLT_MAKE_ANIMATION()
 				(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
@@ -302,9 +298,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : Linear"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -334,9 +329,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : Step"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -368,9 +362,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : CircularIn"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -402,9 +395,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : CircularOut"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -436,9 +428,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : CircularInOut"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -470,9 +461,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : EaseIn"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -504,9 +494,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : EaseOut"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -538,9 +527,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : EaseInOut"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -572,9 +560,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : ExpoIn"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -606,9 +593,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : ExpoOut"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -640,9 +626,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : ExpoInOut"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -674,9 +659,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : SinusoidalIn"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -708,9 +692,9 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : SinusoidalOut"))
-			.AnimationManager(AnimationManager)
+
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION()(
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -742,9 +726,8 @@ TSharedRef<SWidget> SVoltModuleStarshipTab::CreateInterpSection_Alpha()
 		[
 			SNew(SVoltInterpModuleBackground)
 			.Title(INVTEXT("AlphaBased : SinusoidalInOut"))
-			.AnimationManager(AnimationManager)
 			.AnimationToPlay(
-				VOLT_MAKE_ANIMATION(UVoltAnimation)(
+				VOLT_MAKE_ANIMATION() (
 					VOLT_MAKE_MODULE(UVolt_ASM_SetWidgetTransformPivot)
 					.TargetWidgetTransformPivot(FVector2D(0.5f, 0.5f)),
 					VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
@@ -866,7 +849,6 @@ void SVoltSampleStarshipTab::Construct(const FArguments& InArgs)
 				.Padding(FMargin(4, 0))
 				[
 					SNew(SVoltStarshipButton)
-					.AnimationManager(AnimationManager)
 					.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
 					.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Rounder")
 					.ContentMargin(FMargin(10))
@@ -907,7 +889,6 @@ void SVoltSampleStarshipTab::Construct(const FArguments& InArgs)
 				.Padding(FMargin(4, 0))
 				[
 					SNew(SVoltStarshipButton)
-					.AnimationManager(AnimationManager)
 					.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
 					.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Rounder")
 					.ContentMargin(FMargin(10))
@@ -939,13 +920,11 @@ void SVoltSampleStarshipTab::Construct(const FArguments& InArgs)
 				.Padding(FMargin(20))
 				[
 					SNew(SVoltStarshipBorder)
-					.AnimationManager(AnimationManager)
 					.ContentMargin(FMargin(10))
 					.OutlineMargin(FMargin(1))
 					.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
 					.OuterBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
 					[
-
 						SNew(SVerticalBox)
 						+ SVerticalBox::Slot()
 						.AutoHeight()
@@ -963,7 +942,6 @@ void SVoltSampleStarshipTab::Construct(const FArguments& InArgs)
 						.Padding(FMargin(20))
 						[
 							SNew(SVoltStarshipButton)
-							.AnimationManager(AnimationManager)
 							.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
 							.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Round")
 							.ToolTip(
@@ -974,7 +952,7 @@ void SVoltSampleStarshipTab::Construct(const FArguments& InArgs)
 									.Title(INVTEXT("VOLT Library"))
 									.Description(INVTEXT(
 										"Volt is a slate architecture animation library for Unreal Engine. It supports unique declarative syntax that let you animate slates in split seconds."))
-									.AnimationManager(AnimationManager)
+
 									.Size(FVector2D(500, 250))
 									.ExplanationSectionColor(FColor(110, 199, 255))
 									[
@@ -1016,7 +994,6 @@ void SVoltSampleStarshipTab::Construct(const FArguments& InArgs)
 				.Padding(FMargin(4, 0))
 				[
 					SNew(SVoltStarshipButton)
-					.AnimationManager(AnimationManager)
 					.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
 					.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Rounder")
 					.ContentMargin(FMargin(10))
@@ -1047,13 +1024,12 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 		.Padding(VOLT_STARSHIP_BORDER_MARGIN)
 		[
 			SNew(SVoltStarshipBorder)
-			.AnimationManager(AnimationManager)
+
 			.ContentMargin(FMargin(10))
 			.OutlineMargin(FMargin(1))
 			.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
 			.OuterBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
 			[
-
 				SNew(SVerticalBox)
 				+ SVerticalBox::Slot()
 				.AutoHeight()
@@ -1071,7 +1047,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 				.Padding(FMargin(20))
 				[
 					SNew(SVoltStarshipButton)
-					.AnimationManager(AnimationManager)
 					.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
 					.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Round")
 					.ContentMargin(FMargin(10))
@@ -1087,7 +1062,7 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 		.Padding(VOLT_STARSHIP_BORDER_MARGIN)
 		[
 			SNew(SVoltStarshipBorder)
-			.AnimationManager(AnimationManager)
+
 			.ContentMargin(FMargin(10))
 			.OutlineMargin(FMargin(1))
 			.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
@@ -1111,7 +1086,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 				.Padding(FMargin(20))
 				[
 					SNew(SVoltStarshipButton)
-					.AnimationManager(AnimationManager)
 					.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Sphere"))
 					.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Sphere")
 					.ContentMargin(FMargin(10))
@@ -1127,7 +1101,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 				.Padding(FMargin(20))
 				[
 					SNew(SVoltStarshipButton)
-					.AnimationManager(AnimationManager)
 					.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Sphere"))
 					.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Sphere")
 					.ContentMargin(FMargin(10))
@@ -1136,7 +1109,7 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 					.PressColor(FColor(255, 138, 36))
 					.OutlineNormalColor(FColor(255, 252, 222))
 					.OutlineHoverColor(FColor(255, 194, 224))
-					.OutlinePressColor(FColor(255,255,255))
+					.OutlinePressColor(FColor(255, 255, 255))
 					[
 						SNew(STextBlock)
 						.Text(INVTEXT("Colors are customizable."))
@@ -1149,7 +1122,7 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 		.Padding(VOLT_STARSHIP_BORDER_MARGIN)
 		[
 			SNew(SVoltStarshipBorder)
-			.AnimationManager(AnimationManager)
+
 			.ContentMargin(FMargin(10))
 			.OutlineMargin(FMargin(1))
 			.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
@@ -1172,7 +1145,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 				.Padding(FMargin(20))
 				[
 					SNew(SVoltStarshipButton)
-					.AnimationManager(AnimationManager)
 					.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Sphere"))
 					.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Sphere")
 					.NormalColor(FColor(63, 161, 209))
@@ -1194,7 +1166,7 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 		.Padding(VOLT_STARSHIP_BORDER_MARGIN)
 		[
 			SNew(SVoltStarshipBorder)
-			.AnimationManager(AnimationManager)
+
 			.ContentMargin(FMargin(10))
 			.OutlineMargin(FMargin(1))
 			.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
@@ -1224,7 +1196,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 					.Padding(FMargin(1))
 					[
 						SNew(SVoltStarshipButton)
-						.AnimationManager(AnimationManager)
 						.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Sphere"))
 						.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Sphere")
 						.NormalColor(FLinearColor::Transparent)
@@ -1246,7 +1217,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 					.Padding(FMargin(1))
 					[
 						SNew(SVoltStarshipButton)
-						.AnimationManager(AnimationManager)
 						.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Sphere"))
 						.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Sphere")
 						.NormalColor(FLinearColor::Transparent)
@@ -1268,7 +1238,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 					.Padding(FMargin(1))
 					[
 						SNew(SVoltStarshipButton)
-						.AnimationManager(AnimationManager)
 						.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Sphere"))
 						.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Sphere")
 						.NormalColor(FLinearColor::Transparent)
@@ -1291,7 +1260,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 		.Padding(VOLT_STARSHIP_BORDER_MARGIN)
 		[
 			SNew(SVoltStarshipBorder)
-			.AnimationManager(AnimationManager)
 			.ContentMargin(FMargin(10))
 			.OutlineMargin(FMargin(1))
 			.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Round"))
@@ -1314,7 +1282,6 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateButtonSection()
 				.Padding(FMargin(20))
 				[
 					SNew(SVoltStarshipToggleButton)
-					.AnimationManager(AnimationManager)
 					.ButtonLength(20)
 					.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Sphere")
 					.ToggleImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Image.Sphere"))
@@ -1333,215 +1300,214 @@ TSharedRef<SWidget> SVoltSampleStarshipTab::CreateExpandingBorderSection()
 		.HeightOverride(300);
 
 	ResetExpandingBorderSection();
-	
+
 	return ExpandingBorderBox.ToSharedRef();
 }
 
 void SVoltSampleStarshipTab::ResetExpandingBorderSection()
 {
-
 	ExpandingBorderBox->SetContent(
-			SNew(SVoltStarshipBorder)
-			.AnimationManager(AnimationManager)
-			.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
-			.OuterBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
-			.ContentMargin(10)
+		SNew(SVoltStarshipBorder)
+		.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
+		.OuterBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
+		.ContentMargin(10)
+		[
+			SNew(SVerticalBox)
+			+ SVerticalBox::Slot()
+			.AutoHeight()
 			[
-				SNew(SVerticalBox)
-				+ SVerticalBox::Slot()
-				.AutoHeight()
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
 				[
-					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(1)
 					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(1)
+						SNew(SBox)
+						.MinDesiredHeight(18)
 						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT("Appearing items with dynamic expanding Border!!"))
-							]
-						]
-					]
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
-					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(3)
-						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT(" Not only for the texts...."))
-							]
+							SNew(STextBlock)
+							.Text(INVTEXT("Appearing items with dynamic expanding Border!!"))
 						]
 					]
 				]
-				+ SVerticalBox::Slot()
-				.AutoHeight()
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
 				[
-					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(3)
 					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(5)
+						SNew(SBox)
+						.MinDesiredHeight(18)
 						[
-							SNew(SImage)
-							.Image(FVoltEditorStyle::GetUEEditorSlateStyleSet().GetBrush("UnrealDefaultThumbnail"))
-							.DesiredSizeOverride(FVector2D(50,50))
-						]
-					]
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
-					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(7)
-						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT(" Yeah, it's crazy, right? you can put everything here."))
-							]
+							SNew(STextBlock)
+							.Text(INVTEXT(" Not only for the texts...."))
 						]
 					]
 				]
-				+ SVerticalBox::Slot()
-				.AutoHeight()
+			]
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			[
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
 				[
-					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(5)
 					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(10)
-						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT("The best part is what you have to do is just wrapping your slates in SVoltStarshipExpandingBorder and set the delay... "))
-							]
-						]
+						SNew(SImage)
+						.Image(FVoltEditorStyle::GetUEEditorSlateStyleSet().GetBrush("UnrealDefaultThumbnail"))
+						.DesiredSizeOverride(FVector2D(50, 50))
 					]
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
+				]
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
+				[
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(7)
 					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(14)
+						SNew(SBox)
+						.MinDesiredHeight(18)
 						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT("then boom!"))
-								.TextStyle(FVoltEditorStyle::Get(), "VoltStarship.Font.White.Big")
-							]
+							SNew(STextBlock)
+							.Text(INVTEXT(" Yeah, it's crazy, right? you can put everything here."))
 						]
 					]
 				]
-				+ SVerticalBox::Slot()
-				.AutoHeight()
+			]
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			[
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
 				[
-					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(10)
 					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(17)
+						SNew(SBox)
+						.MinDesiredHeight(18)
 						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT("Think about making something like this without Volt."))
-							]
+							SNew(STextBlock)
+							.Text(INVTEXT(
+								"The best part is what you have to do is just wrapping your slates in SVoltStarshipExpandingBorder and set the delay... "))
 						]
 					]
 				]
-				+ SVerticalBox::Slot()
-				.AutoHeight()
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
 				[
-					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(14)
 					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(19)
+						SNew(SBox)
+						.MinDesiredHeight(18)
 						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT("It will be "))
-							]
-						]
-					]
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
-					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(21)
-						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT("very very very very very very "))
-							]
-						]
-					]
-					+ SHorizontalBox::Slot()
-					.AutoWidth()
-					.VAlign(VAlign_Center)
-					.HAlign(HAlign_Left)
-					[
-						SNew(SVoltStarshipExpandingBorder)
-						.AnimationManager(AnimationManager)
-						.DelayDuration(19)
-						[
-							SNew(SBox)
-							.MinDesiredHeight(18)
-							[
-								SNew(STextBlock)
-								.Text(INVTEXT("difficult and time-consuming."))
-							]
+							SNew(STextBlock)
+							.Text(INVTEXT("then boom!"))
+							.TextStyle(FVoltEditorStyle::Get(), "VoltStarship.Font.White.Big")
 						]
 					]
 				]
-			]);
+			]
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			[
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
+				[
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(17)
+					[
+						SNew(SBox)
+						.MinDesiredHeight(18)
+						[
+							SNew(STextBlock)
+							.Text(INVTEXT("Think about making something like this without Volt."))
+						]
+					]
+				]
+			]
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			[
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
+				[
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(19)
+					[
+						SNew(SBox)
+						.MinDesiredHeight(18)
+						[
+							SNew(STextBlock)
+							.Text(INVTEXT("It will be "))
+						]
+					]
+				]
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
+				[
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(21)
+					[
+						SNew(SBox)
+						.MinDesiredHeight(18)
+						[
+							SNew(STextBlock)
+							.Text(INVTEXT("very very very very very very "))
+						]
+					]
+				]
+				+ SHorizontalBox::Slot()
+				.AutoWidth()
+				.VAlign(VAlign_Center)
+				.HAlign(HAlign_Left)
+				[
+					SNew(SVoltStarshipExpandingBorder)
+
+					.DelayDuration(19)
+					[
+						SNew(SBox)
+						.MinDesiredHeight(18)
+						[
+							SNew(STextBlock)
+							.Text(INVTEXT("difficult and time-consuming."))
+						]
+					]
+				]
+			]
+		]);
 }
 
 TSharedRef<SWidget> SVoltSampleStarshipTab::CreateScrollSection()
@@ -1576,7 +1542,7 @@ void SVoltSampleStarshipTab::ResetScrollSection()
 				.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
 				[
 					SNew(SVoltStarshipBorder)
-					.AnimationManager(AnimationManager)
+
 					.InnerBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
 					.OuterBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
 					.HoverTransform(FWidgetTransform(FVector2D(-70, 0), FVector2D(1.2, 1.2), FVector2D(0, 0), 0))
@@ -1601,7 +1567,7 @@ void SVoltSampleStarshipTab::ResetScrollSection()
 						.VAlign(VAlign_Center)
 						[
 							SNew(SVoltStarshipButton)
-							.AnimationManager(AnimationManager)
+
 							.OutlineBorderImage(FVoltEditorStyle::Get().GetBrush("VoltStarship.Border.Rounder"))
 							.ButtonStyle(FVoltEditorStyle::Get(), "VoltStarship.Button.Rounder")
 							.NormalColor(FLinearColor::Transparent)
@@ -1641,7 +1607,7 @@ void SVoltSampleStarshipTab::ResetCard()
 		.Title(INVTEXT("VOLT Library"))
 		.Description(INVTEXT(
 			"Volt is a slate architecture animation library for Unreal Engine. It supports unique declarative syntax that let you animate slates in split seconds."))
-		.AnimationManager(AnimationManager)
+
 		.Size(FVector2D(500, 250))
 		.ExplanationSectionColor(FColor(110, 199, 255))
 		[

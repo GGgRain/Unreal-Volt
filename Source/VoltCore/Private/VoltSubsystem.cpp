@@ -3,6 +3,7 @@
 
 #include "VoltSubsystem.h"
 #include "VoltAnimationManager.h"
+#include "VoltDecl.h"
 #include "VoltModuleRunnable.h"
 #include "VoltProxy.h"
 #include "VoltSettings.h"
@@ -146,9 +147,11 @@ void UVoltSubsystem::SetUtilizingMultithreading(const bool bNewMultithreading)
 
 void UVoltSubsystem::DestructUnnecessaryRegisteredAnimationManager()
 {
-	RegisteredAnimationManager.RemoveAll([](UVoltAnimationManager* AnimationManager)
+	RegisteredAnimationManager.RemoveAll([this](UVoltAnimationManager* AnimationManager = nullptr)
 	{
-		if(AnimationManager != nullptr)
+		if(SharedAnimationManager != nullptr && SharedAnimationManager == AnimationManager) return false;
+		
+		if(AnimationManager != nullptr && AnimationManager->IsValidLowLevel())
 		{
 			if(!AnimationManager->CheckShouldDestruct()) return false;
 
@@ -277,5 +280,17 @@ UVoltSubsystem* UVoltSubsystem::Get()
 	{
 		if(UEngineSubsystem* Subsystem = GEngine->GetEngineSubsystemBase(UVoltSubsystem::StaticClass())) return Cast<UVoltSubsystem>(Subsystem);
 	}
+	return nullptr;
+}
+
+UVoltAnimationManager* UVoltSubsystem::GetSharedAnimationManager()
+{
+	if(UVoltSubsystem* Instance = Get())
+	{
+		if(Instance->SharedAnimationManager == nullptr) VOLT_IMPLEMENT_MANAGER(&Instance->SharedAnimationManager, Instance);
+
+		return Instance->SharedAnimationManager;
+	}
+
 	return nullptr;
 }

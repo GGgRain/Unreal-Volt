@@ -231,6 +231,23 @@ private:
 	 */
 	bool bIsUtilizingMultiThread = true;
 
+
+public:
+
+	/**
+	 * Get shared animation manager instance for the system.
+	 * @return SharedAnimationManager object for the system.
+	 */
+	static UVoltAnimationManager* GetSharedAnimationManager();
+
+private:
+
+	/**
+	 * Shared animation manager of the system that let the users use without implementing animation manager explicitly.
+	 */
+	UPROPERTY(Transient)
+	UVoltAnimationManager* SharedAnimationManager;
+	
 public:
 
 	/**
@@ -238,4 +255,6 @@ public:
 	 * @return The singleton instance of Volt Subsystem.
 	 */
 	static UVoltSubsystem* Get();
+	
+	
 };
