@@ -88,14 +88,14 @@ ChildSlot[
 ];
 
 // Declare a volt animation
-UVoltAnimation* Anim = VOLT_MAKE_ANIMATION(UVoltAnimation)
+UVoltAnimation* Anim = VOLT_MAKE_ANIMATION()
 (
 	VOLT_MAKE_MODULE(UVolt_ASM_InterpBackgroundColor)
 	.TargetColor(OutlinePressColor)
 );
 
 // Play the animation with that SBorder slate. It's just like this.
-VOLT_PLAY_ANIM(AnimationManager, Border, BorderColorAnim);
+VOLT_PLAY_ANIM(Border, BorderColorAnim);
 ```
 
 Considering the main reason why there are not so many plugins or systems with animated UI mostly comes from the complexity of the vanilla Unreal Engine's Slate animation development process (It's horribly slow and difficult to achieve), The level of simplexity of the usage of Volt will let you make much more detailed and creative visual productions.
@@ -132,22 +132,6 @@ We assume that you are going to use Volt on your plugin.
 
 ## :checkered_flag: Quickstart ##
 
-### Making Animation Manager
-
-To animate slates in Volt, you have to make a ```UVoltAnimationManager``` instance first that will actually manage all the animation tracks. 
-
-> [!NOTE]
-> One ```UVoltAnimationManager``` can animate multiple slates as you want, So it's up to you whether to make ```UVoltAnimationManager``` per each slate or reuse any external, already existing instance to save memory usage.
-
-You can make a ```UVoltAnimationManager``` instance with macro: ```VOLT_IMPLEMENT_MANAGER( AnimationManagerPropertyAddress, OwnerSlateSharedPtr )``` or ```VOLT_IMPLEMENT_MANAGER( AnimationManagerPropertyAddress, OwnerUObject )```
-
-```cpp
-// In SVoltSampleStarshipTab.h...
-UVoltAnimationManager* AnimationManager = nullptr;
-
-// In SVoltSampleStarshipTab.cpp...
-VOLT_IMPLEMENT_MANAGER(&AnimationManager, SharedThis(this));
-```
 ### Declaring Animation & Modules
 
 Now it's time to make an actual animation instance. You can use ```VOLT_MAKE_ANIMATION( AnimationClassName )``` macro to declare a new animation with the provided type animation (typically ```UVoltAnimation```) and ```VOLT_MAKE_MODULE( ModuleClassName )``` macro to create a module for the provided module class.
@@ -164,7 +148,7 @@ You can also see that this animation will work like this: changing a slate's ren
 )
 
 ```cpp
-UVoltAnimation* Animation = VOLT_MAKE_ANIMATION(UVoltAnimation) (
+UVoltAnimation* Animation = VOLT_MAKE_ANIMATION() (
 	VOLT_MAKE_MODULE(UVolt_ASM_Sequence)
 	.bShouldLoop(true)
 	(
@@ -205,10 +189,10 @@ UVoltAnimation* Animation = VOLT_MAKE_ANIMATION(UVoltAnimation) (
 
 ### Playing Animation
 
-Only the final process is left! Let's play the animation we made. Let's use ```VOLT_PLAY_ANIM( AnimationManagerPtr, SlateToAnimate, Animation )``` macro to animate the slate.
+Only the final process is left! Let's play the animation we made. Let's use ```VOLT_PLAY_ANIM(SlateToAnimate, Animation )``` macro to animate the slate.
 
 ```cpp
-VOLT_PLAY_ANIM(AnimationManager, SharedThis(this), Animation);
+VOLT_PLAY_ANIM(SharedThis(this), Animation);
 ```
 
 Then you will see something like this.
@@ -231,25 +215,25 @@ Volt provides all the other features for making & managing slates in an organize
 You can store ```FVoltAnimationTrack``` from ```VOLT_PLAY_ANIM( ... )``` macro that indicates the track of the animation playing in the animation manager. You can use this track to manage (query, check playback state, stop) the playing animation.
 
 ```cpp
-FVoltAnimationTrack& Track = VOLT_PLAY_ANIM(AnimationManager, SharedThis(this), Animation);
+FVoltAnimationTrack& Track = VOLT_PLAY_ANIM( SharedThis(this), Animation);
 ```
 
 
 #### Stopping Animation
 
-You can use ```VOLT_STOP_ANIM( AnimationManagerPtr, AnimationTrack )``` to stop specific animation from a specific animation manager with its track.
+You can use ```VOLT_STOP_ANIM( AnimationTrack )``` to stop specific animation from a specific animation manager with its track.
 
 ```cpp
-VOLT_STOP_ANIM(AnimationManager, Track );
+VOLT_STOP_ANIM( Track );
 ```
 
 
 #### Checking Animation State
 
-You can use ```VOLT_CHECK_PLAYING_ANIM( AnimationManagerPtr, AnimationTrack )``` to check whether a specific animation is still being played or finished.
+You can use ```VOLT_CHECK_PLAYING_ANIM( AnimationTrack )``` to check whether a specific animation is still being played or finished.
 
 ```cpp
-if (VOLT_STOP_ANIM(AnimationManager, Track )) {
+if (VOLT_CHECK_PLAYING_ANIM( Track )) {
     // logic when animation is still being played...
 }
 ```
@@ -270,7 +254,25 @@ For native slate types, It will return ```UVoltProxy``` object that wraps the pr
 >
 
 
+### Making Independent Animation Manager
 
+Volt system uses ```UVoltAnimationManager``` to animate slates internally so you needed to make one for your slates, but from Volt 1.2, now  ```UVoltSubsystem``` supports ```Shared Animation Manager``` that lets you never care about implementing animation managers explicitly.
+But sometimes, especially when you have to use ```VOLT_STOP_ALL_ANIM()``` frequently, you might want to implement ```UVoltAnimationManager``` that will animate only specific widgets you got.
+
+> [!NOTE]
+> One ```UVoltAnimationManager``` can animate multiple slates as you want, So it's up to you whether to make ```UVoltAnimationManager``` per each slate or reuse any external, already existing instance to save memory usage.
+
+On such cases, you can make a ```UVoltAnimationManager``` instance with macro: ```VOLT_IMPLEMENT_MANAGER( AnimationManagerPropertyAddress, OwnerSlateSharedPtr )``` or ```VOLT_IMPLEMENT_MANAGER( AnimationManagerPropertyAddress, OwnerUObject )```
+
+```cpp
+// In SVoltSampleStarshipTab.h...
+UVoltAnimationManager* AnimationManager = nullptr;
+
+// In SVoltSampleStarshipTab.cpp...
+VOLT_IMPLEMENT_MANAGER(&AnimationManager, SharedThis(this));
+```
+
+You can use your animation manager by specifying optional parameter of the functions by providing it as the first parameter; ```VOLT_PLAY_ANIM( AnimationManagerPtr, SlateToAnimate, Animation )```  ```VOLT_STOP_ANIM( AnimationManagerPtr, Track )```...
 
 #### Releasing Animation Manager Explicitly
 
