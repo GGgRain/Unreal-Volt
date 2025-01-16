@@ -164,11 +164,13 @@ void UVoltAnimationManager::FlushUnnecessaryTrack()
 
 bool UVoltAnimationManager::HasTrack(const FVoltAnimationTrack& Track)
 {
-	return AnimationTracks.Contains(Track);
+	return AddAnimationTrackQueue.Contains(Track) || AnimationTracks.Contains(Track);
 }
 
 void UVoltAnimationManager::FlushTrack(const FVoltAnimationTrack& Track)
 {
+	if(!HasTrack(Track)) return;
+		
 	//If add queue has this one, remove as well.
 	DequeueOnAddAnimationTrack(Track);
 	

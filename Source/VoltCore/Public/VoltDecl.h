@@ -70,7 +70,7 @@ FORCEINLINE void VOLTCORE_API VOLT_STOP_ANIM(
 {
 	if(UVoltAnimationManager* AnimationManager = UVoltSubsystem::GetSharedAnimationManager())
 	{
-		if(AnimationManager->HasTrack(Track)) AnimationManager->FlushTrack(Track);
+		AnimationManager->FlushTrack(Track);
 	}
 }
 
@@ -151,7 +151,7 @@ FORCEINLINE void VOLTCORE_API VOLT_STOP_ANIM(
 	if (!IsValid(Manager)) return;
 	if (!Manager->IsValidLowLevel()) return;
 
-	if(Manager->HasTrack(Track)) Manager->FlushTrack(Track);
+	Manager->FlushTrack(Track);
 	
 }
 
