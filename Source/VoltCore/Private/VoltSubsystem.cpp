@@ -131,7 +131,7 @@ void UVoltSubsystem::ReleaseModuleUpdateThread()
 
 const bool UVoltSubsystem::IsUtilizingMultithreading() const
 {
-	return bIsUtilizingMultiThread && ModuleUpdateThread != nullptr;
+	return bIsUtilizingMultiThread && ModuleUpdateThread != nullptr && !IsRunningCommandlet();
 }
 
 void UVoltSubsystem::SetUtilizingMultithreading(const bool bNewMultithreading)

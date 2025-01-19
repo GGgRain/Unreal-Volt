@@ -32,7 +32,7 @@ uint32 FVoltModuleRunnable::Run()
 {
 	while (!IsPendingKill())
 	{
-		if(IsWorking()) return 0;
+		if(IsWorking() || IsRunningCommandlet()) return 0;
 		
 		if(AnimationManagers.IsEmpty()) ThreadRunEvent_Semaphore->Wait();
 		
