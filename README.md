@@ -300,5 +300,5 @@ However, this topic will be too long for this document. Please visit this [relea
 If you have any questions related to Volt, please visit our [official discord](https://discord.gg/DzNFax2aBS)
 
 ## :memo: License ##
-This project is licensed under the MIT License. For more details, please refer to the [LICENSE](LICENSE.md) file.
+This project is licensed under the MIT License. For more details, please refer to the [LICENSE](LICENSE) file.
 
