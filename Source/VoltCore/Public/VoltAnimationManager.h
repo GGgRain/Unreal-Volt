@@ -73,6 +73,23 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnTrackRemoved,
                                              UVoltAnimationManager*, Manager,
                                              const FVoltAnimationTrack&, Track);
 
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnAnimationPlayed_NonDynamic,
+											   UVoltAnimationManager*,
+											   const FVoltAnimationTrack&,
+											   const UVoltAnimation*);
+
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnAnimationEnded_NonDynamic,
+                                               UVoltAnimationManager*,
+                                               const FVoltAnimationTrack&,
+                                               const UVoltAnimation*);
+
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnTrackAdded_NonDynamic,
+											   UVoltAnimationManager*,
+											   const FVoltAnimationTrack&);
+
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnTrackRemoved_NonDynamic,
+											   UVoltAnimationManager*,
+											   const FVoltAnimationTrack&);
 UCLASS()
 class VOLTCORE_API UVoltAnimationManager : public UObject
 {
@@ -278,5 +295,15 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="Manager Action")
 	FOnTrackRemoved OnTrackRemoved;
+
+public:
+
+	FOnAnimationPlayed_NonDynamic OnAnimationPlayed_NonDynamic;
+	
+	FOnAnimationEnded_NonDynamic OnAnimationEnded_NonDynamic;
+	
+	FOnTrackAdded_NonDynamic OnTrackAdded_NonDynamic;
+	
+	FOnTrackRemoved_NonDynamic OnTrackRemoved_NonDynamic;
 	
 };

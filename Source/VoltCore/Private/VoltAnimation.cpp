@@ -12,6 +12,8 @@ const bool UVoltAnimation::IsActive() const
 	{
 		if (!Module) continue; //Skip the check if not valid.
 
+		if (Module->IsBegunPlay() && Module->IsEndedPlay()) continue;
+
 		if (Module->IsActive()) return true;
 	}
 

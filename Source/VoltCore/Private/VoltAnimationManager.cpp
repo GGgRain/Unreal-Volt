@@ -110,10 +110,20 @@ void UVoltAnimationManager::ProcessAddAnimationTrack(FVoltAnimationTrack& Track)
 		OnTrackAdded.Broadcast(this, Track);
 	}
 
+	if (OnTrackAdded_NonDynamic.IsBound())
+	{
+		OnTrackAdded_NonDynamic.Broadcast(this, Track);
+	}
+
 	//Broadcast the event.
 	if (OnAnimationPlayed.IsBound())
 	{
 		OnAnimationPlayed.Broadcast(this, Track, Track.TargetAnimation && Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
+	}
+
+	if(OnAnimationPlayed_NonDynamic.IsBound())
+	{
+		OnAnimationPlayed_NonDynamic.Broadcast(this, Track, Track.TargetAnimation && Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
 	}
 
 	AnimationTracks.Add(Track);
@@ -127,10 +137,21 @@ void UVoltAnimationManager::ProcessDeleteAnimationTrack(FVoltAnimationTrack& Tra
 	{
 		OnAnimationEnded.Broadcast(this, Track, Track.TargetAnimation && Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
 	}
+
+	if(OnAnimationEnded_NonDynamic.IsBound())
+	{
+		OnAnimationEnded_NonDynamic.Broadcast(this, Track, Track.TargetAnimation && Track.TargetAnimation.IsValid() ? Track.TargetAnimation.Get() : nullptr);
+	}
+	
 	//Broadcast the event.
 	if (OnTrackRemoved.IsBound())
 	{
 		OnTrackRemoved.Broadcast(this, Track);
+	}
+
+	if (OnTrackRemoved_NonDynamic.IsBound())
+	{
+		OnTrackRemoved_NonDynamic.Broadcast(this, Track);
 	}
 	
 	//Release its animation.
@@ -361,12 +382,12 @@ bool UVoltAnimationManager::CheckShouldDestruct() const
 		return false;
 	}
 
-	if (OwnerVoltInterface->GetTargetSlate().IsValid())
+	if (IsRooted())
 	{
 		return false;
 	}
 
-	if (IsRooted())
+	if (OwnerVoltInterface != nullptr && OwnerVoltInterface->GetTargetSlate().IsValid())
 	{
 		return false;
 	}

@@ -24,9 +24,17 @@ void UVolt_ASM_Simultaneous::ModifySlateVariable(const float DeltaTime,
 		if(Item == nullptr || !Item->IsValidLowLevel()) continue;
 		
 		//if the module is not began played, Play it.
-		if(!Item->IsBegunPlay())
+		if (!Item->IsBegunPlay())
 		{
 			Item->BeginPlayModule();
+		}
+			
+		if(Item->IsEndedPlay()) continue;
+
+		if (!Item->IsActive())
+		{
+			Item->EndPlayModule();
+			continue;
 		}
 
 		Item->ModifySlateVariable(DeltaTime, Volt);

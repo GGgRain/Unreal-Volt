@@ -73,3 +73,8 @@ FORCEINLINE bool operator==(const FVoltAnimationTrack& A, const FVoltAnimationTr
 {
 	return A.GetGUID() == B.GetGUID();
 }
+
+FORCEINLINE bool operator!=(const FVoltAnimationTrack& A, const FVoltAnimationTrack& B)
+{
+	return !(A == B);
+}
