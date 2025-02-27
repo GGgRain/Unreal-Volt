@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "1.1",
+	"Version": 5,
+	"VersionName": "1.3",
 	"FriendlyName": "Volt",
 	"Description": "A modular animation library for Unreal's slate architecture. Work in both editor and runtime.",
 	"Category": "Slate",
