@@ -12,21 +12,24 @@ class UVoltAnimation;
  * This struct use its Guid for the identification. If this Guid is same with the other track instance, then both will be recognized as the same tracks.
  */
 USTRUCT(BlueprintType)
-struct FVoltAnimationTrack
+struct VOLTCORE_API FVoltAnimationTrack
 {
 	GENERATED_BODY()
 
 public:
-	virtual ~FVoltAnimationTrack() = default;
+	
+	virtual ~FVoltAnimationTrack();
 
-	FVoltAnimationTrack(const FGuid& SpecificGuid) : Guid(SpecificGuid) {}
+public:
 	
-	FVoltAnimationTrack(): Guid(FGuid::NewGuid()) {}
-	
-	FVoltAnimationTrack(TScriptInterface<IVoltInterface> InSlateInterface, const TSoftObjectPtr<UVoltAnimation>& InAnimation) : TargetSlateInterface(InSlateInterface),TargetAnimation(InAnimation),Guid(FGuid::NewGuid()) {}
+	FVoltAnimationTrack(const FGuid& SpecificGuid);
+
+	FVoltAnimationTrack();
+
+	FVoltAnimationTrack(TScriptInterface<IVoltInterface> InSlateInterface, const TSoftObjectPtr<UVoltAnimation>& InAnimation);
 
 	//Copy-paste its Guid since both must direct the same track.
-	FVoltAnimationTrack(const FVoltAnimationTrack& From) : TargetSlateInterface(From.TargetSlateInterface), TargetAnimation(From.TargetAnimation), Guid(From.GetGUID()) {}
+	FVoltAnimationTrack(const FVoltAnimationTrack& From);
 
 public:
 	
@@ -41,7 +44,7 @@ public:
 	/**
 	 * Guid for the track. If this Guid is same with the other track than both will be recognized as the same tracks.
 	 */
-	UPROPERTY()
+	UPROPERTY(meta=(IgnoreForMemberInitializationTest) /* Added to silence false warning about uninitialized property */)
 	FGuid Guid = FGuid();
 
 public:
@@ -54,7 +57,7 @@ public:
 
 public:
 
-	VOLTCORE_API static const FVoltAnimationTrack NullTrack;
+	static const FVoltAnimationTrack NullTrack;
 	
 };
 
