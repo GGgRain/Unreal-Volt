@@ -119,9 +119,7 @@ bool UVoltEditorSettings::IsEditorOnly() const
 
 UVoltEditorSettings* UVoltEditorSettings::Get()
 {
-	UVoltEditorSettings* ProxyDevSettings = CastChecked<UVoltEditorSettings>(UVoltEditorSettings::StaticClass()->GetDefaultObject());
-	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
-	return ProxyDevSettings;
+	return GetMutableDefault<UVoltEditorSettings>();
 }
 
 
